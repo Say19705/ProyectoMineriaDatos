@@ -525,4 +525,18 @@ En el siguiente cuadro se muestra el tipo de dato de cada variable:
 #
 str(datosMatrimonio)
 ```
+Explicación 
 
+### Prueba de normalidad para popularity:
+```{r normalHist, echo=FALSE}
+#install.packages("ggplot2",repos = "http://cran.us.r-project.org")
+library (ggplot2)
+ggplot(data = datosMatrimonio, aes(x = AÑOREG)) + 
+  geom_histogram(aes(y=..density.., fill = ..count..))+
+  scale_fill_gradient(low = "#DCDCDC", high = "#7C7C7C")+
+  stat_function(fun = dnorm, colour = "firebrick",
+                args = list(mean = mean(datosMatrimonio$popularity),
+                            sd = sd(datosMatrimonio$popularity)))+
+  ggtitle("Histograma con curva normal teórica de los registros de matrimonios por año") + 
+  theme_bw()
+```  
