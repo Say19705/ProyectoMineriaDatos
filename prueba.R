@@ -12,7 +12,7 @@ library(haven)
 #"C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos/datosMat2017.sav"
 #"C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos/datosMat2018.sav"
 #"C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos/datosMat2019.sav"
-
+ #para no borrar todos las rutas y ponerlas pueden crear sus propios path y solo seleccionar mi bloque y poner ctrl+shift+c 
 path2009 = file.path("C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos/datosMat2009.sav")
 path2010 = file.path("C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos/datosMat2010.sav")
 path2011 = file.path("C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos/datosMat2011.sav")
@@ -37,4 +37,10 @@ datos2017 <- read_sav(path2017)
 datos2018 <- read_sav(path2018)
 datos2019 <- read_sav(path2019)
 
-View(datos2009)
+
+#Hacer tabla 2019 igual
+#AREAGOCU <- rnorm(nrow(datos2019))
+#datos2019 <- cbind(datos2019, AREAGOCU)
+#datos2019$AREAGOCU <- "None"
+#View(datos2019)
+
