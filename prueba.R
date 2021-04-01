@@ -210,6 +210,8 @@ for(i in 1:length(cnames)){
   }
 }
 colnames(datos2012) <- nombresN
+
+View(datos2012)
 #------------------------Modificaciones 2013------------------------
 #Crear columnas en dataset 2013 AÑOOCU, NUNUHO, NUMUNU
 AÑOOCU <- rnorm(nrow(datos2013))
@@ -253,6 +255,9 @@ for(i in 1:length(cnames)){
   }
 }
 colnames(datos2013) <- nombresN
+
+View(datos2013)
+
 
 #-----------------------Modificaciones 2014---------------------------
 #Crear columnas en dataset 2014 AÑOOCU, NUNUHO, NUNUMU
