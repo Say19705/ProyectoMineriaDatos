@@ -41,7 +41,7 @@ library(ggpubr)
 library(corrplot)
 library(mctest)
 library(caret)
-library(Amelia)
+#library(Amelia)
 
 library(caretEnsemble)
 library(psych)
@@ -66,87 +66,7 @@ datos2019 <- read_sav("datosMat2019.sav")
 
 #Se usarán como estandar las bases de 2015,2016,2017 /no se si colocar las columnas
 
-#Crear columna AREAGOCU en dataset 2018
-AREAGOCU <- rnorm(nrow(datos2018))
-datos2018 <- cbind(datos2018, AREAGOCU)
-datos2018$AREAGOCU <- "None"
-#View(datos2018)
-
-#Crear columna AREAGOCU en dataset 2019
-AREAGOCU <- rnorm(nrow(datos2019))
-datos2019 <- cbind(datos2019, AREAGOCU)
-datos2019$AREAGOCU <- "None"
-#View(datos2019)
-
-#Crear columnas en dataset 2012 AÑOOCU, NUNUHO, NUNUMU
-AÑOOCU <- rnorm(nrow(datos2012))
-datos2012 <- cbind(datos2012, AÑOOCU)
-datos2012$AÑOOCU <- "None"
-
-NUNUHO <- rnorm(nrow(datos2012))
-datos2012 <- cbind(datos2012,NUNUHO)
-datos2012$NUNUHO <- "None"
-
-NUNUMU <- rnorm(nrow(datos2012))
-datos2012 <- cbind(datos2012, NUNUMU)
-datos2012$NUNUMU <- "None"
-
-#View(datos2012)
-#Crear columnas en dataset 2013 AÑOOCU, NUNUHO, NUMUNU
-AÑOOCU <- rnorm(nrow(datos2013))
-datos2013 <- cbind(datos2013, AÑOOCU)
-datos2013$AÑOOCU <- "None"
-
-NUNUHO <- rnorm(nrow(datos2013))
-datos2013 <- cbind(datos2013,NUNUHO)
-datos2013$NUNUHO <- "None"
-
-NUNUMU <- rnorm(nrow(datos2013))
-datos2013 <- cbind(datos2013, NUNUMU)
-datos2013$NUNUMU <- "None"
-
-#View(datos2013)
-#Crear columnas en dataset 2014 AÑOOCU, NUNUHO, NUNUMU
-AÑOOCU <- rnorm(nrow(datos2014))
-datos2014 <- cbind(datos2014, AÑOOCU)
-datos2014$AÑOOCU <- "None"
-
-NUNUHO <- rnorm(nrow(datos2014))
-datos2014 <- cbind(datos2014,NUNUHO)
-datos2014$NUNUHO <- "None"
-
-NUNUMU <- rnorm(nrow(datos2014))
-datos2014 <- cbind(datos2014, NUNUMU)
-datos2014$NUNUMU <- "None"
-#View(datos2014)
-
-#Crear columnas en dataset 2010 NUNUHO, NUNUMU
-NUNUHO <- rnorm(nrow(datos2010))
-datos2010 <- cbind(datos2010,NUNUHO)
-datos2010$NUNUHO <- "None"
-
-NUNUMU <- rnorm(nrow(datos2010))
-datos2010 <- cbind(datos2010, NUNUMU)
-datos2010$NUNUMU <- "None"
-
-#Crear columnas en dataset 2010 NUNUHO, NUNUMU
-NUNUHO <- rnorm(nrow(datos2010))
-datos2010 <- cbind(datos2010,NUNUHO)
-datos2010$NUNUHO <- "None"
-
-NUNUMU <- rnorm(nrow(datos2010))
-datos2010 <- cbind(datos2010, NUNUMU)
-datos2010$NUNUMU <- "None"
-
-#Crear columnas en dataset 2011 NUNUHO, NUNUMU
-NUNUHO <- rnorm(nrow(datos2011))
-datos2011 <- cbind(datos2011,NUNUHO)
-datos2011$NUNUHO <- "None"
-
-NUNUMU <- rnorm(nrow(datos2011))
-datos2011 <- cbind(datos2011, NUNUMU)
-datos2011$NUNUMU <- "None"
-
+#----------------Modificaciones 2009 -------------------
 #Crear columnas en dataset 2009 ESCHOM, ESCMUJ y DIAOCU
 ESCHOM <- rnorm(nrow(datos2009))
 datos2009 <- cbind(datos2009, ESCHOM)
@@ -161,6 +81,34 @@ datos2009 <- cbind(datos2009, DIAOCU)
 datos2009$DIAOCU <- "None"
 #View(datos2009)
 
+#cambiar los nombres de NUPHON, NUPMUJ a NUNUHO, NUNUMU 2009
+cnames <- colnames(datos2009)
+nombresN = c()
+for(i in 1:length(cnames)){
+  if(cnames[i] == "NUPHON"){
+    nombresN[i] <- "NUNUHO"
+  }
+  else if(cnames[i] == "NUPMUJ"){
+    nombresN[i] <- "NUNUMU"
+  }
+  else{
+    nombresN[i] <- cnames[i]
+  }
+}
+colnames(datos2009) <- nombresN
+#View(datos2009)
+
+
+#-----------------------Modificaciones 2010--------------------
+#Crear columnas en dataset 2010 NUNUHO, NUNUMU
+NUNUHO <- rnorm(nrow(datos2010))
+datos2010 <- cbind(datos2010,NUNUHO)
+datos2010$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2010))
+datos2010 <- cbind(datos2010, NUNUMU)
+datos2010$NUNUMU <- "None"
+
 #Poner todas en uppercase 2010
 cnames <- colnames(datos2010)
 mayu2010 = c()
@@ -170,6 +118,17 @@ for (i in 1:length(cnames)){
 }
 
 colnames(datos2010)<-mayu2010
+
+#---------------------Modificaciones 2011----------------------
+#Crear columnas en dataset 2011 NUNUHO, NUNUMU
+NUNUHO <- rnorm(nrow(datos2011))
+datos2011 <- cbind(datos2011,NUNUHO)
+datos2011$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2011))
+datos2011 <- cbind(datos2011, NUNUMU)
+datos2011$NUNUMU <- "None"
+
 
 #Poner todas en uppercase 2011
 cnames <- colnames(datos2011)
@@ -181,8 +140,90 @@ for (i in 1:length(cnames)){
 
 colnames(datos2011)<-mayu2011
 
-View(datos2010)
-View(datos2011)
+#-------------------------Modificaciones 2012------------------------
+#Crear columnas en dataset 2012 AÑOOCU, NUNUHO, NUNUMU
+AÑOOCU <- rnorm(nrow(datos2012))
+datos2012 <- cbind(datos2012, AÑOOCU)
+datos2012$AÑOOCU <- "None"
+
+NUNUHO <- rnorm(nrow(datos2012))
+datos2012 <- cbind(datos2012,NUNUHO)
+datos2012$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2012))
+datos2012 <- cbind(datos2012, NUNUMU)
+datos2012$NUNUMU <- "None"
+
+#View(datos2012)
+
+#------------------------Modificaciones 2013------------------------
+#Crear columnas en dataset 2013 AÑOOCU, NUNUHO, NUMUNU
+AÑOOCU <- rnorm(nrow(datos2013))
+datos2013 <- cbind(datos2013, AÑOOCU)
+datos2013$AÑOOCU <- "None"
+
+NUNUHO <- rnorm(nrow(datos2013))
+datos2013 <- cbind(datos2013,NUNUHO)
+datos2013$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2013))
+datos2013 <- cbind(datos2013, NUNUMU)
+datos2013$NUNUMU <- "None"
+
+#View(datos2013)
+
+
+#falta grupo etnico 
+
+#-----------------------Modificaciones 2014---------------------------
+#Crear columnas en dataset 2014 AÑOOCU, NUNUHO, NUNUMU
+AÑOOCU <- rnorm(nrow(datos2014))
+datos2014 <- cbind(datos2014, AÑOOCU)
+datos2014$AÑOOCU <- "None"
+
+NUNUHO <- rnorm(nrow(datos2014))
+datos2014 <- cbind(datos2014,NUNUHO)
+datos2014$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2014))
+datos2014 <- cbind(datos2014, NUNUMU)
+datos2014$NUNUMU <- "None"
+#View(datos2014)
+
+
+#falta grupo etnico 
+
+#-------------------Modificaciones 2015--------------------------
+
+#falta grupo etnico 
+
+#-------------------Modificaciones 2016--------------------------
+
+#falta grupo etnico 
+
+#-------------------Modificaciones 2017--------------------------
+
+#falta grupo etnico 
+
+#-------------------Modificaciones 2018--------------------------
+#Crear columna AREAGOCU en dataset 2018
+AREAGOCU <- rnorm(nrow(datos2018))
+datos2018 <- cbind(datos2018, AREAGOCU)
+datos2018$AREAGOCU <- "None"
+#View(datos2018)
+
+#falta grupo etnico 
+
+#-------------------Modificaciones 2019--------------------------
+#Crear columna AREAGOCU en dataset 2019
+AREAGOCU <- rnorm(nrow(datos2019))
+datos2019 <- cbind(datos2019, AREAGOCU)
+datos2019$AREAGOCU <- "None"
+#View(datos2019)
+
+#falta grupo etnico 
+
+#----------------------------------------------------------------
 
 #luego lo voy a ordenar todo por años, solo quiero ir poco a poco
 #----------
