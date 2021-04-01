@@ -1,0 +1,61 @@
+---
+title: "Proyecto de Minería de datos. Matrimonios de Guatemala"
+author: "Ayleen Rubio 19003, Andrés Say 19705, Andreé Toledo 18439"
+date: "25/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#"C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos"
+
+knitr::opts_knit$set(root.dir="C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos")
+```
+
+# Análisis exploratorio 
+
+
+```{r, echo=FALSE}
+library(e1071)
+library(caret)
+library(magrittr)
+library(dplyr)
+library(plyr)
+library(dplyr)
+library(cluster)
+library(e1071)
+library(mclust)
+
+library(fpc)
+library(NbClust)
+library(factoextra)
+#library(tidyverse)
+library(readr)
+
+library(ppclust)
+library(randomForest)
+library(ggplot2)
+library(broom)
+library(ggpubr)
+
+library(corrplot)
+library(mctest)
+library(caret)
+library(Amelia)
+
+library(caretEnsemble)
+library(psych)
+library(mice)
+library(GGally)
+library(rpart)
+library(e1071)
+
+library(haven)
+
+#datos <- read.csv("train.csv")
+#datosCasas <- datos[,-c(1,7)]
+
+```
+
+
+
