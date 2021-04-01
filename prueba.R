@@ -38,6 +38,43 @@ datos2018 <- read_sav(path2018)
 datos2019 <- read_sav(path2019)
 
 
+
+#Intento de cambiar el pueblo de origen a grupo étnico 2013
+#View(datos2013)
+#datos2013 <- replace(datos2013,1,"yellooow")
+#View(datos2013)
+ 
+# print(datos2013$PUEHOM[1])
+# print(datos2013$PUEHOM[2])
+# if(datos2013$PUEHOM[1] == 4){
+#   datos2013$PUEHOM[1] <- 2 
+# }
+#print(datos2013$PUEHOM[1])
+
+#print(nrow(datos2013))
+
+#View(datos2013)
+
+#es esto lo que les digo
+for(i in 1:nrow(datos2013)){
+  if(datos2013$PUEHOM[i] == 2){
+    datos2013$PUEHOM[i] <- 1
+  }
+  else if(datos2013$PUEHOM[i] == 3){
+    datos2013$PUEHOM[i] <- 1
+  }
+  else if(datos2013$PUEHOM[i] == 4){
+    datos2013$PUEHOM[i] <- 2
+  }
+  else if(datos2013$PUEHOM[i] == 5){
+    datos2013$PUEHOM[i] <- 1
+  }
+  else{
+    datos2013$PUEHOM[i] <- datos2013$PUEHOM[i]
+  }
+}
+View(datos2013)
+
 #cambiar los nombres de NUPHON, NUPMUJ a NUNUHO, NUNUMU 2009
 # cnames <- colnames(datos2009)
 # nombresN = c()
