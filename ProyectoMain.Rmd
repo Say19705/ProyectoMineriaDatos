@@ -120,6 +120,33 @@ datos2014 <- cbind(datos2014, NUNUMU)
 datos2014$NUNUMU <- "None"
 #View(datos2014)
 
+#Crear columnas en dataset 2010 NUNUHO, NUNUMU
+NUNUHO <- rnorm(nrow(datos2010))
+datos2010 <- cbind(datos2010,NUNUHO)
+datos2010$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2010))
+datos2010 <- cbind(datos2010, NUNUMU)
+datos2010$NUNUMU <- "None"
+
+#Crear columnas en dataset 2010 NUNUHO, NUNUMU
+NUNUHO <- rnorm(nrow(datos2010))
+datos2010 <- cbind(datos2010,NUNUHO)
+datos2010$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2010))
+datos2010 <- cbind(datos2010, NUNUMU)
+datos2010$NUNUMU <- "None"
+
+#Crear columnas en dataset 2011 NUNUHO, NUNUMU
+NUNUHO <- rnorm(nrow(datos2011))
+datos2011 <- cbind(datos2011,NUNUHO)
+datos2011$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2011))
+datos2011 <- cbind(datos2011, NUNUMU)
+datos2011$NUNUMU <- "None"
+
 #Crear columnas en dataset 2009 ESCHOM, ESCMUJ y DIAOCU
 ESCHOM <- rnorm(nrow(datos2009))
 datos2009 <- cbind(datos2009, ESCHOM)
@@ -134,7 +161,30 @@ datos2009 <- cbind(datos2009, DIAOCU)
 datos2009$DIAOCU <- "None"
 #View(datos2009)
 
-#Poner todas en uppercase 2010, 2011
+#Poner todas en uppercase 2010
+cnames <- colnames(datos2010)
+mayu2010 = c()
+
+for (i in 1:length(cnames)){
+  mayu2010[i] <- toupper(cnames[i])  
+}
+
+colnames(datos2010)<-mayu2010
+
+#Poner todas en uppercase 2011
+cnames <- colnames(datos2011)
+mayu2011 = c()
+
+for (i in 1:length(cnames)){
+  mayu2011[i] <- toupper(cnames[i])  
+}
+
+colnames(datos2011)<-mayu2011
+
+View(datos2010)
+View(datos2011)
+
+#luego lo voy a ordenar todo por años, solo quiero ir poco a poco
 #----------
 ```
 
