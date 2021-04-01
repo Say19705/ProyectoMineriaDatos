@@ -516,5 +516,13 @@ datosMatrimonio <- do.call("rbind",l)
 ## Informe de análisis exploratorio 
 En este informe usted podrá leer los hallazgos sobre los matrimonios, basado en los datos obtenidos del INE
 
+```{r Matrimonios, echo=FALSE}
+summary(datosMatrimonio)
+```
+En el siguiente cuadro se muestra el tipo de dato de cada variable:
 
+```{r data, echo=FALSE}
+#
+str(datosMatrimonio)
+```
 
