@@ -38,6 +38,17 @@ datos2018 <- read_sav(path2018)
 datos2019 <- read_sav(path2019)
 
 
+#cnames <- colnames(datos2010)
+#mayu2010 = c()
+
+#for (i in 1:length(cnames)){
+#  mayu2010[i] <- toupper(cnames[i])  
+#}
+
+#colnames(datos2010)<-mayu2010
+#View(datos2010)
+
+  
 #Hacer tabla 2019 igual
 #AREAGOCU <- rnorm(nrow(datos2019))
 #datos2019 <- cbind(datos2019, AREAGOCU)
