@@ -52,9 +52,90 @@ library(e1071)
 
 library(haven)
 
-#datos <- read.csv("train.csv")
-#datosCasas <- datos[,-c(1,7)]
+datos2009 <- read_sav("datosMat2009.sav")
+datos2010 <- read_sav("datosMat2010.sav")
+datos2011 <- read_sav("datosMat2011.sav")
+datos2012 <- read_sav("datosMat2012.sav")
+datos2013 <- read_sav("datosMat2013.sav")
+datos2014 <- read_sav("datosMat2014.sav")
+datos2015 <- read_sav("datosMat2015.sav")
+datos2016 <- read_sav("datosMat2016.sav")
+datos2017 <- read_sav("datosMat2017.sav")
+datos2018 <- read_sav("datosMat2018.sav")
+datos2019 <- read_sav("datosMat2019.sav")
 
+#Se usarán como estandar las bases de 2015,2016,2017 /no se si colocar las columnas
+
+#Crear columna AREAGOCU en dataset 2018
+AREAGOCU <- rnorm(nrow(datos2018))
+datos2018 <- cbind(datos2018, AREAGOCU)
+datos2018$AREAGOCU <- "None"
+#View(datos2018)
+
+#Crear columna AREAGOCU en dataset 2019
+AREAGOCU <- rnorm(nrow(datos2019))
+datos2019 <- cbind(datos2019, AREAGOCU)
+datos2019$AREAGOCU <- "None"
+#View(datos2019)
+
+#Crear columnas en dataset 2012 AÑOOCU, NUNUHO, NUNUMU
+AÑOOCU <- rnorm(nrow(datos2012))
+datos2012 <- cbind(datos2012, AÑOOCU)
+datos2012$AÑOOCU <- "None"
+
+NUNUHO <- rnorm(nrow(datos2012))
+datos2012 <- cbind(datos2012,NUNUHO)
+datos2012$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2012))
+datos2012 <- cbind(datos2012, NUNUMU)
+datos2012$NUNUMU <- "None"
+
+#View(datos2012)
+#Crear columnas en dataset 2013 AÑOOCU, NUNUHO, NUMUNU
+AÑOOCU <- rnorm(nrow(datos2013))
+datos2013 <- cbind(datos2013, AÑOOCU)
+datos2013$AÑOOCU <- "None"
+
+NUNUHO <- rnorm(nrow(datos2013))
+datos2013 <- cbind(datos2013,NUNUHO)
+datos2013$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2013))
+datos2013 <- cbind(datos2013, NUNUMU)
+datos2013$NUNUMU <- "None"
+
+#View(datos2013)
+#Crear columnas en dataset 2014 AÑOOCU, NUNUHO, NUNUMU
+AÑOOCU <- rnorm(nrow(datos2014))
+datos2014 <- cbind(datos2014, AÑOOCU)
+datos2014$AÑOOCU <- "None"
+
+NUNUHO <- rnorm(nrow(datos2014))
+datos2014 <- cbind(datos2014,NUNUHO)
+datos2014$NUNUHO <- "None"
+
+NUNUMU <- rnorm(nrow(datos2014))
+datos2014 <- cbind(datos2014, NUNUMU)
+datos2014$NUNUMU <- "None"
+#View(datos2014)
+
+#Crear columnas en dataset 2009 ESCHOM, ESCMUJ y DIAOCU
+ESCHOM <- rnorm(nrow(datos2009))
+datos2009 <- cbind(datos2009, ESCHOM)
+datos2009$ESCHOM <- "None"
+
+ESCMUJ <- rnorm(nrow(datos2009))
+datos2009 <- cbind(datos2009, ESCMUJ)
+datos2009$ESCMUJ <- "None"
+
+DIAOCU <- rnorm(nrow(datos2009))
+datos2009 <- cbind(datos2009, DIAOCU)
+datos2009$DIAOCU <- "None"
+#View(datos2009)
+
+#Poner todas en uppercase 2010, 2011
+#----------
 ```
 
 
