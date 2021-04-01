@@ -38,6 +38,23 @@ datos2018 <- read_sav(path2018)
 datos2019 <- read_sav(path2019)
 
 
+#cambiar los nombres de NUPHON, NUPMUJ a NUNUHO, NUNUMU 2009
+# cnames <- colnames(datos2009)
+# nombresN = c()
+# for(i in 1:length(cnames)){
+#   if(cnames[i] == "NUPHON"){
+#     nombresN[i] <- "NUNUHO"
+#   }
+#   else if(cnames[i] == "NUPMUJ"){
+#     nombresN[i] <- "NUNUMU"
+#   }
+#   else{
+#     nombresN[i] <- cnames[i]
+#   }
+# }
+# colnames(datos2009) <- nombresN
+
+
 #cnames <- colnames(datos2010)
 #mayu2010 = c()
 
