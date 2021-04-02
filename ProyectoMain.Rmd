@@ -630,14 +630,14 @@ table(datosMatrimonio$DEPOCU)
 table(datosMatrimonio$MUPOCU)
 ```
 
-### Tabla de frecuencias para LA escolaridad del hombre
+### Tabla de frecuencias para la escolaridad del hombre
 ```{r frecuenciaEscolaridadHombre, echo=FALSE}
 
 #EscolHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCHOM, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$ESCHOM)
 ```
 
-### Tabla de frecuencias para LA escolaridad de la Mujer
+### Tabla de frecuencias para la escolaridad de la Mujer
 ```{r frecuenciaEscolaridadMujer, echo=FALSE}
 
 #EscolMuj <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCMUJ, function(x) unlist(strsplit(x, "\\|"))))))
@@ -657,9 +657,65 @@ table(datosMatrimonio$GETHOM)
 table(datosMatrimonio$GETMUJ)
 ```
 
+## c------------------------------------------------------
+
+```{r CorrelacionEdades, echo=FALSE}
+plot(x = datosMatrimonio$EDADHOM, y= datosMatrimonio$EDADMUJ, xlab= "Edad del Hombre", ylab= "Edad de la mujer", main = "Correlación entre las edades de los cónyuges")
+abline(lm(datosMatrimonio$EDADMUJ ~ datosMatrimonio$EDADHOM), col = "red")
+```
+Evidentementeno se puede observar correlación, sin embargo, es posible observar que hay hombres con edades muy altas con mujeres debajo de los 18 años,cabe mencionar que es importante filtrar los datos atipicos o norepresentativos del dataset
+
+# ```{r minimos edades, echo=FALSE}
+# res1 <- top_n(datosMatrimonio,-10,datosMatrimonio$EDADMUJ)
+# print(res1$EDADMUJ)
+# ```
+Como se puede ver, existen muchos datos extraños dentro del data set, en donde la edad de los "cónyuges" es incluso menor a 5 años, sin embargo, revisando la lista de variables del INE de cada año, pudimos darnos cuenta que la edad más pequeña para mujeres durante los años fue 12 y de los hombres 14, por lo tanto se hizo un nuevo dataset para estudiar con precisión lo que deseamos estudiar. se filtro de la base de datos de matrimonios los valores en donde la edad de la mujer era menor a 18 (por el objetivo) y mayor a 12(para eliminar los datos no significativos o no lógicos), asimismo se filtró los datos en donde el hombre es mayor a 14 (de igual manera para eliminar esos datos confusos)
+```{r FiltroDeEdades, echo=FALSE}
+#install.packages("tidyverse")
+#library(tidyverse)
+#datosMatrimonio$EDADMUJ <- as.numeric(factor(datosMatrimonio$EDADMUJ))
+menorEdadMuj <- datosMatrimonio %>% filter(EDADMUJ <= 18)
+menorEdadMuj <- menorEdadMuj %>% filter(EDADMUJ >= 12)
+menorEdad <- menorEdadMuj %>% filter(EDADHOM >= 14)
+
+```
+
+# ```{r minimos edades filtrado, echo=FALSE}
+# res1 <- top_n(menorEdad,-10,menorEdad$EDADMUJ)
+# print(res1$EDADMUJ)
+# ```
+
+```{r CorrEdadesFiltro, echo=FALSE}
+plot(x = menorEdad$EDADHOM, y= menorEdad$EDADMUJ, xlab= "Edad del Hombre", ylab= "Edad de la mujer", main = "Correlación entre las edades, mujeres menores de 18")
+abline(lm(menorEdad$EDADMUJ ~ menorEdad$EDADHOM), col = "red")
+```
+Filtrando los datos en donde las mujeres son menores a 18 años, es posible ber que una gran cantidad de mujeres se encuentran comprometidas con hombres mucho mayores a ellas, existen tados atípicos muy extensos y preocupantes, cabe mencionar que los datos que se encuentran en el fondo (muy pocos pero si existen) se encuentran así debido a que los datos no son indicados en el diagrama.
+
+## departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
+```{r tabla por departamentos de casamientos, echo = FALSE}
+library(dplyr)
+library(magrittr)
+
+
+menorEdadGraph <- menorEdad %>% filter(EDADHOM >= 18)
+menorEdadGraph <- menorEdadGraph %>% filter(EDADMUJ < 18)
+depMatMen <- (menorEdadGraph$DEPOCU)
+#departamentos
+table(depMatMen)
+#print(nrow(menorEdad))
+#print(nrow(menorEdadGraph))
+
+```
+## departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
+```{r tabla por departamentos del dataset, echo = FALSE}
+library(dplyr)
+library(magrittr)
 
 
 
+#departamentos
+table(menorEdad$DEPOCU)
+```
 
 
 
