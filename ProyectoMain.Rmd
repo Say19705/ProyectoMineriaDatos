@@ -674,7 +674,7 @@ Como se puede ver, existen muchos datos extraños dentro del data set, en donde 
 #install.packages("tidyverse")
 #library(tidyverse)
 #datosMatrimonio$EDADMUJ <- as.numeric(factor(datosMatrimonio$EDADMUJ))
-menorEdadMuj <- datosMatrimonio %>% filter(EDADMUJ <= 18)
+menorEdadMuj <- datosMatrimonio %>% filter(EDADMUJ < 18)
 menorEdadMuj <- menorEdadMuj %>% filter(EDADMUJ >= 12)
 menorEdad <- menorEdadMuj %>% filter(EDADHOM >= 14)
 
@@ -691,31 +691,59 @@ abline(lm(menorEdad$EDADMUJ ~ menorEdad$EDADHOM), col = "red")
 ```
 Filtrando los datos en donde las mujeres son menores a 18 años, es posible ber que una gran cantidad de mujeres se encuentran comprometidas con hombres mucho mayores a ellas, existen tados atípicos muy extensos y preocupantes, cabe mencionar que los datos que se encuentran en el fondo (muy pocos pero si existen) se encuentran así debido a que los datos no son indicados en el diagrama.
 
-## departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
-```{r tabla por departamentos de casamientos, echo = FALSE}
-library(dplyr)
-library(magrittr)
 
-
-menorEdadGraph <- menorEdad %>% filter(EDADHOM >= 18)
-menorEdadGraph <- menorEdadGraph %>% filter(EDADMUJ < 18)
-depMatMen <- (menorEdadGraph$DEPOCU)
-#departamentos
-table(depMatMen)
-#print(nrow(menorEdad))
-#print(nrow(menorEdadGraph))
-
-```
 ## departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
 ```{r tabla por departamentos del dataset, echo = FALSE}
 library(dplyr)
 library(magrittr)
 
-
+menorEdadGraph <- menorEdad %>% filter(EDADHOM >= 18)
 
 #departamentos
-table(menorEdad$DEPOCU)
+table(menorEdadGraph$DEPOCU)
 ```
+Muchos de estos se llevan a cabo en el departamento de Guatemala, donde una gran población son ladinos.
+
+## Municipios en donde se llevan a cabo los matrimonios de mujeres menores de edad
+```{r tabla por municipios de casamientos, echo = FALSE}
+library(dplyr)
+library(magrittr)
+
+depMun <- (menorEdadGraph$MUPOCU)
+#departamentos
+table(depMun)
+#print(nrow(menorEdad))
+#print(nrow(menorEdadGraph))
+
+```
+
+#La etnia de la mujer en donde es más común este evento
+```{r tabla por etnia de la mujer, echo = FALSE}
+library(dplyr)
+library(magrittr)
+
+etniaMujer <- (menorEdadGraph$GETMUJ)
+#departamentos
+table(etniaMujer)
+#print(nrow(menorEdad))
+#print(nrow(menorEdadGraph))
+
+```
+Se puede observar que no hay una diferencia significativa en estos grupos, esto si importante para saber si es cultural
+
+#La etnia del hombre en donde es más común este evento
+```{r tabla por etnia del hombre, echo = FALSE}
+library(dplyr)
+library(magrittr)
+
+etniaHombre <- (menorEdadGraph$GETHOM)
+#departamentos
+table(etniaHombre)
+#print(nrow(menorEdad))
+#print(nrow(menorEdadGraph))
+
+```
+Se puede observar que no hay una diferencia significativa en estos grupos, esto si importante para saber si es cultural
 
 
 
