@@ -512,6 +512,8 @@ datos2019 <- datos2019 %>%
 
 l = list(datos2009,datos2010,datos2011,datos2012,datos2013,datos2014,datos2015,datos2016,datos2017,datos2018,datos2019)
 datosMatrimonio <- do.call("rbind",l)
+datosMatrimonio$EDADHOM <- as.numeric(factor(datosMatrimonio$EDADHOM))
+datosMatrimonio$EDADMUJ <- as.numeric(factor(datosMatrimonio$EDADMUJ))
 ```
 ## Informe de análisis exploratorio 
 En este informe usted podrá leer los hallazgos sobre los matrimonios, basado en los datos obtenidos del INE
@@ -525,9 +527,14 @@ En el siguiente cuadro se muestra el tipo de dato de cada variable:
 #
 str(datosMatrimonio)
 ```
-Explicación 
+El dataset tiene 23 variables, el departamento, municipalidad, mes y año de registro, la casificación de la unión, las edades de los hombres y mujer, el grupo étnico de los hombres y mujeres, su nacionalidad, su oficio, la cantidad de nupcias de cada uno. Luego tambien se encuentran las variables de ocurrencia. el departamento, municipalidad, mes, año, area y dia de ocurrencia. Por último se encuentra la escolaridad de cada uno.
+Las variables más interesantes parece ser los que proporcionan información de la fecha del matrimonio. 
+Otra con gran potencial, son las edades de los cónyuges, ya que con ellas podemos analizar cual es la tendencia de matrimonios de menores, diferencias de edades etc.
 
-### Prueba de normalidad para popularity:
+
+# Análisis de variables cuantitativas
+## Registros de matrimonio
+### Prueba de normalidad para  registros de matrimonios:
 ```{r normalHist, echo=FALSE}
 #install.packages("ggplot2",repos = "http://cran.us.r-project.org")
 library (ggplot2)
@@ -540,3 +547,123 @@ ggplot(data = datosMatrimonio, aes(x = AÑOREG)) +
   ggtitle("Histograma con curva normal teórica de los registros de matrimonios por año") + 
   theme_bw()
 ```  
+Como se esparía, no existe una relación visible en el histograma de registros de matrimonios, parece ser bastante constante durante los años
+### Diagrama de caja y bigotes
+```{r normalBox, echo=FALSE}
+boxplot(datosMatrimonio$AÑOREG, main = "Caja y Bigotes de registro de matrimonios por año", xlab = "Registro por año")
+```
+Como dicho anteriormente, no hay muchos grupos atípicos ya que se concentran dentro de un intervalo.
+### Diagrama de qqnormal
+```{r normalQQ, echo=FALSE}
+qqnorm(datosMatrimonio$AÑOREG, col="blue")
+qqline(datosMatrimonio$AÑOREG, col="red")
+```
+Aunque parece seguir una distribución normal, hay bastantes datos que se encuentran fuera de la linea de tendencia.
+## Registros de Edad hombre
+### Prueba de normalidad para la edad del hombre:
+```{r normalHistEdadHombre, echo=FALSE}
+#install.packages("ggplot2",repos = "http://cran.us.r-project.org")
+library (ggplot2)
+ggplot(data = datosMatrimonio, aes(x = EDADHOM)) + 
+  geom_histogram(aes(y=..density.., fill = ..count..))+
+  scale_fill_gradient(low = "#DCDCDC", high = "#7C7C7C")+
+  stat_function(fun = dnorm, colour = "firebrick",
+                args = list(mean = mean(datosMatrimonio$EDADHOM),
+                            sd = sd(datosMatrimonio$EDADHOM)))+
+  ggtitle("Histograma con curva normal teórica de las edades de los hombres") + 
+  theme_bw()
+```  
+En este histograma se puede ver que tiene relativamente forma de campana, sin embargo es evidente que tiene un sesgo hacia la izquierda.
+
+###Diagrama de caja y bigotes
+```{r normalBoxEdadHombre, echo=FALSE}
+boxplot(datosMatrimonio$EDADHOM, main = "Caja y Bigotes de edad de los hombres al casarse", xlab = "edad")
+```
+Se evidencia la gran cantidad de datos atípicos en el diagrama, se encuentran muy dispersos arriba de la media
+
+###Diagrama qqnormal
+```{r normalQQEdadHombre, echo=FALSE}
+qqnorm(datosMatrimonio$EDADHOM, col="blue")
+qqline(datosMatrimonio$EDADHOM, col="red")
+```
+Es muy notable en el diagrama qqnormal que los datos no siguen una distribución acorde a la linea de tendencia.
+
+## Registros de edad de mujeres
+### Prueba de normalidad para la edad de la mujer:
+```{r normalHistEdadMuje, echo=FALSE}
+#install.packages("ggplot2",repos = "http://cran.us.r-project.org")
+library (ggplot2)
+ggplot(data = datosMatrimonio, aes(x = EDADMUJ)) + 
+  geom_histogram(aes(y=..density.., fill = ..count..))+
+  scale_fill_gradient(low = "#DCDCDC", high = "#7C7C7C")+
+  stat_function(fun = dnorm, colour = "firebrick",
+                args = list(mean = mean(datosMatrimonio$EDADMUJ),
+                            sd = sd(datosMatrimonio$EDADMUJ)))+
+  ggtitle("Histograma con curva normal teórica de las edades de las mujeres") + 
+  theme_bw()
+```  
+De la misma manera que en el histograma de hombres, hay una forma relativa de campana, sin embargo se nota un gran sesgo a la izquierda.
+###Diagrama de caja y bigotes
+```{r normalBoxEdadMujer, echo=FALSE}
+boxplot(datosMatrimonio$EDADMUJ, main = "Caja y Bigotes de edad de las mujeres al casarse", xlab = "edad")
+```
+En este diagrama de caja y bigotes es posible ver una gran cantidad de datos atípicos, muy similar al diagrama de la edad de los hombres
+###Diagrama qqnormal
+```{r normalQQEdadMujer, echo=FALSE}
+qqnorm(datosMatrimonio$EDADMUJ, col="blue")
+qqline(datosMatrimonio$EDADMUJ, col="red")
+```
+Los valores en este diagrama evidentemente no siguen con una distribución normal ya que no esán sobre la linea de tendencia.
+
+## Tabla de frecuencias para variables cualitativas
+
+### Tabla de frecuencias para el departamento de ocurrencia
+```{r frecuenciaDepartamento, echo=FALSE}
+
+#DepOcurren <- data.frame(table(do.call(c, lapply(datosMatrimonio$DEPOCU, function(x) unlist(strsplit(x, "\\|"))))))
+table(datosMatrimonio$DEPOCU)
+```
+### Tabla de frecuencias para el municipio de ocurrencia
+```{r frecuenciaMunicipio, echo=FALSE}
+
+#MuniOcurren <- data.frame(table(do.call(c, lapply(datosMatrimonio$MUPOCU, function(x) unlist(strsplit(x, "\\|"))))))
+table(datosMatrimonio$MUPOCU)
+```
+
+### Tabla de frecuencias para LA escolaridad del hombre
+```{r frecuenciaEscolaridadHombre, echo=FALSE}
+
+#EscolHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCHOM, function(x) unlist(strsplit(x, "\\|"))))))
+table(datosMatrimonio$ESCHOM)
+```
+
+### Tabla de frecuencias para LA escolaridad de la Mujer
+```{r frecuenciaEscolaridadMujer, echo=FALSE}
+
+#EscolMuj <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCMUJ, function(x) unlist(strsplit(x, "\\|"))))))
+table(datosMatrimonio$ESCMUJ)
+```
+
+### Tabla de frecuencias para el grupo étnico del hombre
+```{r frecuenciaEtniaHombre, echo=FALSE}
+#EtHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$GETHOM, function(x) unlist(strsplit(x, "\\|"))))))
+table(datosMatrimonio$GETHOM)
+```
+
+### Tabla de frecuencias para el grupo étnico de la mujer
+```{r frecuenciaEtniaMujer, echo=FALSE}
+
+#EtHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$GETMUJ, function(x) unlist(strsplit(x, "\\|"))))))
+table(datosMatrimonio$GETMUJ)
+```
+
+
+
+
+
+
+
+
+
+
+
