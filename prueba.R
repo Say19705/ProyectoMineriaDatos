@@ -496,3 +496,5 @@ l = list(datos2009,datos2010,datos2011,datos2012,datos2013,datos2014,datos2015,d
 datosMatrimonio <- do.call("rbind",l)
 
 View(datosMatrimonio)
+
+
