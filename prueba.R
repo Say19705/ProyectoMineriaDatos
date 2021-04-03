@@ -497,4 +497,83 @@ datosMatrimonio <- do.call("rbind",l)
 
 View(datosMatrimonio)
 
-
+#install.packages("cluster")
+#ejemplo de internet para clustering de variables categoricas.
+# #----- Dummy Data -----#
+# # the data will be sterile clean in order to not get distracted with other issues that might arise, but I will also write about some difficulties I had, outside the code
+# library(dplyr)
+# # ensuring reproducibility for sampling
+# set.seed(40)
+# # generating random variable set
+# # specifying ordered factors, strings will be converted to factors when using data.frame()
+# # customer ids come first, we will generate 200 customer ids from 1 to 200
+# id.s <- c(1:200) %>%
+#   factor()
+# budget.s <- sample(c("small", "med", "large"), 200, replace = T) %>%
+#   factor(levels=c("small", "med", "large"), 
+#          ordered = TRUE)
+# origins.s <- sample(c("x", "y", "z"), 200, replace = T, 
+#                     prob = c(0.7, 0.15, 0.15))
+# area.s <- sample(c("area1", "area2", "area3", "area4"), 200, 
+#                  replace = T,
+#                  prob = c(0.3, 0.1, 0.5, 0.2))
+# source.s <- sample(c("facebook", "email", "link", "app"), 200,   
+#                    replace = T,
+#                    prob = c(0.1,0.2, 0.3, 0.4))
+# ## day of week - probabilities are mocking the demand curve
+# dow.s <- sample(c("mon", "tue", "wed", "thu", "fri", "sat", "sun"), 200, replace = T,
+#                 prob = c(0.1, 0.1, 0.2, 0.2, 0.1, 0.1, 0.2)) %>%
+#   factor(levels=c("mon", "tue", "wed", "thu", "fri", "sat", "sun"), 
+#          ordered = TRUE)
+# # dish 
+# dish.s <- sample(c("delicious", "the one you don't like", "pizza"), 200, replace = T)
+# 
+# # by default, data.frame() will convert all the strings to factors
+# synthetic.customers <- data.frame(id.s, budget.s, origins.s, area.s, source.s, dow.s, dish.s)
+# #----- Dissimilarity Matrix -----#
+# library(cluster) 
+# # to perform different types of hierarchical clustering
+# # package functions used: daisy(), diana(), clusplot()
+# 
+# 
+# 
+# 
+# #synthetic.customers <- as.data.frame(unclass(synthetic.customers)) 
+# 
+# synthetic.customers$budget.s <- as.factor(synthetic.customers$budget.s)
+# synthetic.customers$origins.s <- as.factor(synthetic.customers$origins.s)
+# synthetic.customers$area.s <- as.factor(synthetic.customers$area.s)
+# synthetic.customers$source.s <- as.factor(synthetic.customers$source.s)
+# synthetic.customers$dow.s <- as.factor(synthetic.customers$dow.s)
+# synthetic.customers$dish.s <- as.factor(synthetic.customers$dish.s)
+# 
+# str(synthetic.customers)
+# gower.dist <- daisy(synthetic.customers[ ,3:7], metric = c("gower"))
+# 
+# #------------ AGGLOMERATIVE CLUSTERING ------------#
+#   # I am looking for the most balanced approach
+#   # Complete linkages is the approach that best fits this demand - I will leave only this one here, don't want to get it cluttered
+#   # complete
+# aggl.clust.c <- hclust(gower.dist, method = "complete")
+# plot(aggl.clust.c,
+#      main = "Agglomerative, complete linkages")
+# 
+# library("ggplot2")
+# library("reshape2")
+# library("purrr")
+# library("dplyr")
+# # let's start with a dendrogram
+# library("dendextend")
+# dendro <- as.dendrogram(aggl.clust.c)
+# dendro.col <- dendro %>%
+#   set("branches_k_color", k = 7, value =   c("darkslategray", "darkslategray4", "darkslategray3", "gold3", "darkcyan", "cyan3", "gold3")) %>%
+#   set("branches_lwd", 0.6) %>%
+#   set("labels_colors", 
+#       value = c("darkslategray")) %>% 
+#   set("labels_cex", 0.5)
+# ggd1 <- as.ggdend(dendro.col)
+# ggplot(ggd1, theme = theme_minimal()) +
+#   labs(x = "Num. observations", y = "Height", title = "Dendrogram, k = 7")
+# 
+# 
+#install.packages("ppclust")
