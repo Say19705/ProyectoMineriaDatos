@@ -829,7 +829,8 @@ gkm2<- datosClustering[datosClustering$grupo==2,]
 gkm3<- datosClustering[datosClustering$grupo==3,]
 gkm4<- datosClustering[datosClustering$grupo==4,]
 ```
-Se puede observar como los datos se encuentran divididos en 4 grupos, verde, rojo, azul y negro. en donde todos los grupos, excepto en verde parecen estar bastante concentrados en un punto.
+
+Se puede observar cómo los datos se encuentran divididos en 4 grupos, verde, rojo, azul y negr, en donde todos los grupos, excepto el azul, parecen estar bastante concentrados en un punto.
 
 ## Mixture of gaussians
 ```{r gaussians, echo = FALSE}
@@ -842,12 +843,14 @@ g2PMC<-datosClustering[datosClustering$mxGau==2,]
 g3PMC<-datosClustering[datosClustering$mxGau==3,]
 g4PMC<-datosClustering[datosClustering$mxGau==4,]
 ```
-En este gráfico se puede observar como en cada combinación de gráficos sucede la combinación de grupos y se observan los clusters bastante separados.
+
+En este gráfico se puede observar como en cada combinación de gráficos sucede la combinación de grupos y se observan los clusters bastante separados y bien identificados.
 
 ## Fuzzy C-means
 ```{r fuzzy2, echo=FALSE}
 library(e1071)#para cmeans
 library(cluster)
+set.seed(123)
 fcmf<-cmeans(datosClustering[,1:4],4)
 datosClustering$FCGrupos<-fcmf$cluster
 g1FCM <- datosClustering[datosClustering$FCGrupos == 1,]
@@ -861,7 +864,7 @@ library(fpc)
 plotcluster(datosClustering,fcmf$cluster)
 ```
 
-En el primer gráfico, clusplot, s epuede ver detras las regiones y como se encuentran los datos, además se indica que se explica casi 63% del punto de variabilidad.
+En el primer gráfico, clusplot, se puede ver detrás las regiones y como se encuentran los datos, además se indica que se explica casi 64% del punto de variabilidad.
 
 En el segundo gráfico se encuentran ya separados los clusters y es posible observar la variabilidad entre ellos.
 
@@ -871,6 +874,7 @@ summary(gkm2)
 summary(gkm3)
 summary(gkm4)
 ```
+
 Observando los resúmenes de cada cluster podemos darnos cuenta que en el clustering por kmeans podemos observar que una de las divisiones más evidentes se realizó por la edad del hombre, en donde el grupo 1 tiene los que se encuentran entre 14-22, el 2 entre 22-39, el 3 entre 40-86 y el 4 parece ser un complemento del 1 en donde se encuentran los de 14-24. Las edades de las mujeres de los grupos no parece ser un factor determinante al igual que el año de registro.
 
 ```{r analisis de cada grupo mixture gaussians, echo=FALSE}
@@ -879,6 +883,7 @@ summary(g2PMC)
 summary(g3PMC)
 summary(g4PMC)
 ```
+
 En este resúmen podemos identificar que se agrupo principalmente en relación al año, el grupo 1 se encuentran los años 2015-2020, 2 2012-2015, 3 2009,2012 y el 4to parece ser un complemento del 1ro. las edades parecen ser similares a través de los grupos.
 
 ```{r analisis de cada grupo fuzzy c means, echo=FALSE}
@@ -887,6 +892,7 @@ summary(g2FCM)
 summary(g3FCM)
 summary(g4FCM)
 ```
+
 En el resúmer por fuzzy se puede identificar que la media de la edad de las mujeres parece ser constante, los años un poco variados pero en cierta manera se observa una relación entre año y edad del hombre.
 
 
