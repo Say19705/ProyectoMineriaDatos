@@ -12,7 +12,23 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir="C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos")
 ```
 
-# Análisis exploratorio 
+# Proyecto No. 1. Análisis de matrimonios en Guatemala  
+
+Actualmente en Guatemala es legal contraer matrimonio hasta cumplir la mayoría de edad, es decir los 18 años, tanto para los hombres como para las mujeres, sin embargo, esto no fue decretado en el Código Civil hasta agosto de 2017. Anteriormente en el 2015 ya se había hecho una reforma para elevar la edad mínima de matrimonio a los 18 años pero en estas reformas aún era posible contraer matrimonio a los 16 años con el permiso de un juez. 
+Antes de todas estas reformas en los Códigos Civil y Penal, era posible contraer matrimonio desde que se cumplía los 14 años de edad y, en caso de agresiones sexuales, era permitido el matrimonio civil entre ofendida y ofensor en relaciones con menores de edad, lo cual cambió en el año 2005 al ser declarado Inconstitucional, posteriormente en el año 2009 La Ley contra la Violencia Sexual, Explotación y Trata de Personas agravó las sentencias en los casos de delitos sexuales con víctimas menores de 18 años.
+-unionestempranas.org
+
+A pesar de que se haya prohibido contraer matrimonio siendo menores de edad, según una declaración del defensor de la Niñez de la PDH Luis de León en el año 2019, aún se encuentran registros de matrimonio entre dos personas menores, ocurriendo principalmente en departamentos occidentales indígenas de Huehuetenango, Quetzaltenango y San Marcos, además de la capital del país. Según se informó, algunas instituciones públicas y juristas no tenían conocimientos sobre tal prohibición, razón por la cual tuvieron lugar estos matrimonios sin algún tipo de dificultad. -Prensa Libre: redacción AFP, 2019.
+
+En la presente investigación se busca estudiar los casos de matrimonio desde el año 2009 hasta el año 2019 para verificar si existe algún cambio en la ocurrencia de matrimonios a partir de los años de las reformas y para estudiar los casos de matrimonios con menores de edad y verificar si estos suelen ser con otras personas menores de edad o con mayores de edad, de ser el caso, se busca estudiar a su vez la diferencia de edad entre ambos cónyuges.
+
+## Análisis exploratorio  
+
+Para poder hacer un análisis exploratorio de los datos de 2009 a 2019 ha sido necesario hacer una limpieza de estos en los siguientes aspectos:
+Principalmente se cuenta con las columnas que describen departamento de registro, municipio de registro, mes de registro, año de registro, clase de unión, número de nupcias contraídas por el hombre y por la mujer, edad del hombre y de la mujer, grupo étnico del hombre y de la mujer, nacionalidad del hombre y de la mujer, ocupación del hombre y de la mujer, escolaridad del hombre y de la mujer, área geográfica de ocurrencia y día de ocurrencia. Sin embargo, no todos estos datos se encontraban en todas las bases de datos o no contaban con el mismo nombre de variable o se encontraban con diferencias entre mayúsculas y minúsculas, de la misma manera se encontró que en algunos casos el año de ocurrencia se encontraba descrito únicamente como 9 o 10 en vez de contar con el año completo, por lo que fue necesario hacer cambios para generalizar todo.
+Como estándar se han utilizado los años 2015, 2016 y 2017, por lo que las bases de los años anteriores se han adaptado al formato de estas tres, agregando las columnas de número de nupcias del hombre y la mujer en los años 2010, 2011, 2012, 2013 y 2014, año de ocurrencia en 2012, 2013 y 2014, escolaridad del hombre y de la mujer y día de ocurrencia en el año 2009 y por último se ha agregamo la columna de área geográfica de ocurrencia en los años 2018 y 2019.
+Luego de agregar estar columnas se ha hecho las modificaciones necesarias en el formato de los datos o respectivos nombres de las columnas para que todos los años contaran con el mismo formato y pudieran ser unificados en una sola base de datos.
+
 
 
 ```{r, echo=FALSE}
@@ -528,13 +544,12 @@ str(datosMatrimonio)
 ```
 
 El dataset tiene 23 variables, el departamento, municipalidad, mes y año de registro, la casificación de la unión, las edades de los hombres y mujer, el grupo étnico de los hombres y mujeres, su nacionalidad, su oficio, la cantidad de nupcias de cada uno. Luego tambien se encuentran las variables de ocurrencia. el departamento, municipalidad, mes, año, area y dia de ocurrencia. Por último se encuentra la escolaridad de cada uno.
-Las variables más interesantes parece ser los que proporcionan información de la fecha del matrimonio. 
-Otra con gran potencial, son las edades de los cónyuges, ya que con ellas podemos analizar cual es la tendencia de matrimonios de menores, diferencias de edades etc.
+Las variables más interesantes para el porpósito de la investigación son lass que proporcionan información de la fecha del matrimonio. Otras con gran potencial, son las edades de los cónyuges, ya que con ellas podemos analizar cual es la tendencia de matrimonios de menores, diferencias de edades etc.
 
 
-# Análisis de variables cuantitativas
-## Registros de matrimonio
-### Prueba de normalidad para  registros de matrimonios:
+## Análisis de variables cuantitativas
+### Registros de matrimonio
+#### Prueba de normalidad para  registros de matrimonios:
 ```{r normalHist, echo=FALSE}
 #install.packages("ggplot2",repos = "http://cran.us.r-project.org")
 library (ggplot2)
@@ -547,18 +562,26 @@ ggplot(data = datosMatrimonio, aes(x = AÑOREG)) +
   ggtitle("Histograma con curva normal teórica de los registros de matrimonios por año") + 
   theme_bw()
 ```  
-Como se esparía, no existe una relación visible en el histograma de registros de matrimonios, parece ser bastante constante durante los años
+
+Como es de esperarse, no es posible observar que exista una relación en el histograma de registros de matrimonios con las reformas planteadas para la prohibición de matrimonios con menores de edad, ya que parece que la cantidad de matrimonios ha sido bastante constante durante los años. Según el histograma mostrado, la cantidad de matrimonios por año no sigue una distribución normal.
+
 ### Diagrama de caja y bigotes
 ```{r normalBox, echo=FALSE}
 boxplot(datosMatrimonio$AÑOREG, main = "Caja y Bigotes de registro de matrimonios por año", xlab = "Registro por año")
 ```
-Como dicho anteriormente, no hay muchos grupos atípicos ya que se concentran dentro de un intervalo.
+
+Como dicho anteriormente, no hay muchos grupos atípicos ya que se concentran dentro de un intervalo.Según este diagrama, sí se cuenta con normalidad en la cantidad de matrimonios por año.
+
 ### Diagrama de qqnormal
 ```{r normalQQ, echo=FALSE}
 qqnorm(datosMatrimonio$AÑOREG, col="blue")
 qqline(datosMatrimonio$AÑOREG, col="red")
 ```
-Aunque parece seguir una distribución normal, hay bastantes datos que se encuentran fuera de la linea de tendencia.
+
+Aunque en el diagrama qqnormal parece que se sigue una distribución normal al encontrarse muchos de los datos alineados, hay bastantes datos que se encuentran fuera de la linea de tendencia, por lo que no se cumple con normalidad en la cantidad de matrimonios por año.
+
+En conclusión, la cantidad de matrimonios por año no sigue una distribución normal.
+
 ## Registros de Edad hombre
 ### Prueba de normalidad para la edad del hombre:
 ```{r normalHistEdadHombre, echo=FALSE}
@@ -573,20 +596,26 @@ ggplot(data = datosMatrimonio, aes(x = EDADHOM)) +
   ggtitle("Histograma con curva normal teórica de las edades de los hombres") + 
   theme_bw()
 ```  
-En este histograma se puede ver que tiene relativamente forma de campana, sin embargo es evidente que tiene un sesgo hacia la izquierda.
+
+En este histograma se puede observar que los datos tienen relativamente forma de campana, sin embargo, es evidente que estos tienen un sesgo hacia la izquierda, esto quiere decir que usualmente la edad entre los hombres en un matrimonio se encuentra debajo de los 30. Sin embargo, es importante mencionar que como dato interesante se puede observar que hay casos de matrimonios en hombres de más de 75 años. 
+Debido al sesgo, la edad de los hombres en matrimonios no sigue una distribución normal.
 
 ###Diagrama de caja y bigotes
 ```{r normalBoxEdadHombre, echo=FALSE}
 boxplot(datosMatrimonio$EDADHOM, main = "Caja y Bigotes de edad de los hombres al casarse", xlab = "edad")
 ```
-Se evidencia la gran cantidad de datos atípicos en el diagrama, se encuentran muy dispersos arriba de la media
+
+Se evidencia la gran cantidad de datos atípicos en el diagrama, se encuentran muy dispersos arriba de la media y del extremo superior que se encuentra al rededor de los 30 años. Esto quiere decir que la edad de los hombres en el matrimonio no sigue una distribución normal.
 
 ###Diagrama qqnormal
 ```{r normalQQEdadHombre, echo=FALSE}
 qqnorm(datosMatrimonio$EDADHOM, col="blue")
 qqline(datosMatrimonio$EDADHOM, col="red")
 ```
-Es muy notable en el diagrama qqnormal que los datos no siguen una distribución acorde a la linea de tendencia.
+
+Como puede observarse, es muy notable en el diagrama qqnormal que los datos no siguen una distribución acorde a la linea de tendencia, esto quiere decir que la edad del hombre en el matrimonio no sigue una distribución normal.
+
+En conclusión, la edad de los hombres en el matrimonio no sigue una distribución normal.
 
 ## Registros de edad de mujeres
 ### Prueba de normalidad para la edad de la mujer:
@@ -602,18 +631,25 @@ ggplot(data = datosMatrimonio, aes(x = EDADMUJ)) +
   ggtitle("Histograma con curva normal teórica de las edades de las mujeres") + 
   theme_bw()
 ```  
-De la misma manera que en el histograma de hombres, hay una forma relativa de campana, sin embargo se nota un gran sesgo a la izquierda.
+
+De la misma manera que en el histograma de hombres, hay una forma relativa de campana, sin embargo se nota un gran sesgo a la izquierda que demuestra que la edad de mujeres en el matrimonio suele ser debajo de los 25, aunque también se cuentan con algunos datos arriba de los 75 años. Debido al sesgo, la edad de mujeres en el matrimonio no sigue una distribución normal.
+
 ###Diagrama de caja y bigotes
 ```{r normalBoxEdadMujer, echo=FALSE}
 boxplot(datosMatrimonio$EDADMUJ, main = "Caja y Bigotes de edad de las mujeres al casarse", xlab = "edad")
 ```
-En este diagrama de caja y bigotes es posible ver una gran cantidad de datos atípicos, muy similar al diagrama de la edad de los hombres
+
+En este diagrama de caja y bigotes es posible ver una gran cantidad de datos atípicos arriba del extremo superior que se encuentra al rededor de los 30 años, muy similar al diagrama de la edad de los hombres, por lo que de la misma manera no se cuenta con normalidad en la edad de las mujeres en el matrimonio.
+
 ###Diagrama qqnormal
 ```{r normalQQEdadMujer, echo=FALSE}
 qqnorm(datosMatrimonio$EDADMUJ, col="blue")
 qqline(datosMatrimonio$EDADMUJ, col="red")
 ```
-Los valores en este diagrama evidentemente no siguen con una distribución normal ya que no esán sobre la linea de tendencia.
+
+Como puede observarse, los valores en este diagrama evidentemente no siguen con una distribución normal ya que no esán sobre la linea de tendencia, por lo que la edad de las mujeres en el matrimonio no sigue una distribución normal.
+
+En conclusión, la edad de las mujeres en el matrimonio no sigue una distribución normal.
 
 ## Tabla de frecuencias para variables cualitativas
 
@@ -623,12 +659,17 @@ Los valores en este diagrama evidentemente no siguen con una distribución norma
 #DepOcurren <- data.frame(table(do.call(c, lapply(datosMatrimonio$DEPOCU, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$DEPOCU)
 ```
+
+Como puede observarse, el departamento en el que suele haber más matrimonios es en Guatemala, seguido por Huehuetenango y luego por Alta Verapaz. El departamento en el que hay menos matrimonios es petén, con un registro de 1656 ocurrencias.
+
 ### Tabla de frecuencias para el municipio de ocurrencia
 ```{r frecuenciaMunicipio, echo=FALSE}
 
 #MuniOcurren <- data.frame(table(do.call(c, lapply(datosMatrimonio$MUPOCU, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$MUPOCU)
 ```
+
+De la misma manera, es Guatemala el municipio que cuenta con la mayor cantidad de matrimonios.
 
 ### Tabla de frecuencias para la escolaridad del hombre
 ```{r frecuenciaEscolaridadHombre, echo=FALSE}
@@ -637,6 +678,8 @@ table(datosMatrimonio$MUPOCU)
 table(datosMatrimonio$ESCHOM)
 ```
 
+Como puede observarse, el nivel de escolaridad más común entre los hombres es primaria, con 255,480 casos, mientras que el más bajo es el de post grado con 46 casos.
+
 ### Tabla de frecuencias para la escolaridad de la Mujer
 ```{r frecuenciaEscolaridadMujer, echo=FALSE}
 
@@ -644,11 +687,15 @@ table(datosMatrimonio$ESCHOM)
 table(datosMatrimonio$ESCMUJ)
 ```
 
+Como puede observarse, el nivel de escolaridad más común entre las mujeres es primaria, con 222076 casos, mientras que el más bajo es el de post grado con 33 casos.
+
 ### Tabla de frecuencias para el grupo étnico del hombre
 ```{r frecuenciaEtniaHombre, echo=FALSE}
 #EtHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$GETHOM, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$GETHOM)
 ```
+
+Coomo puede observarse, el grupo étnico más común al que pertenecen los hombres en la base de datos es no indígena.
 
 ### Tabla de frecuencias para el grupo étnico de la mujer
 ```{r frecuenciaEtniaMujer, echo=FALSE}
@@ -657,19 +704,19 @@ table(datosMatrimonio$GETHOM)
 table(datosMatrimonio$GETMUJ)
 ```
 
-## c------------------------------------------------------
+De la misma manera, puede observarse que el grupo étnico más común al que pertenecen las mujeres en la base de datos es no indígena.
+
+## Correlacion entre edades de los cónyuges
 
 ```{r CorrelacionEdades, echo=FALSE}
 plot(x = datosMatrimonio$EDADHOM, y= datosMatrimonio$EDADMUJ, xlab= "Edad del Hombre", ylab= "Edad de la mujer", main = "Correlación entre las edades de los cónyuges")
 abline(lm(datosMatrimonio$EDADMUJ ~ datosMatrimonio$EDADHOM), col = "red")
 ```
+
 Evidentementeno se puede observar correlación, sin embargo, es posible observar que hay hombres con edades muy altas con mujeres debajo de los 18 años,cabe mencionar que es importante filtrar los datos atipicos o norepresentativos del dataset
 
-# ```{r minimos edades, echo=FALSE}
-# res1 <- top_n(datosMatrimonio,-10,datosMatrimonio$EDADMUJ)
-# print(res1$EDADMUJ)
-# ```
-Como se puede ver, existen muchos datos extraños dentro del data set, en donde la edad de los "cónyuges" es incluso menor a 5 años, sin embargo, revisando la lista de variables del INE de cada año, pudimos darnos cuenta que la edad más pequeña para mujeres durante los años fue 12 y de los hombres 14, por lo tanto se hizo un nuevo dataset para estudiar con precisión lo que deseamos estudiar. se filtro de la base de datos de matrimonios los valores en donde la edad de la mujer era menor a 18 (por el objetivo) y mayor a 12(para eliminar los datos no significativos o no lógicos), asimismo se filtró los datos en donde el hombre es mayor a 14 (de igual manera para eliminar esos datos confusos)
+Como se puede ver, existen muchos datos extraños dentro del data set, estudiándolo se ha encontrado una gran cantidad de 1's y otros datos en donde la edad de los "cónyuges" es incluso menor a 5 años, por lo que la presencia de estos datos nos ha llevado a buscar la naturaleza de las variables, por lo que revisando la lista de variables del INE de cada año, pudimos darnos cuenta que la edad más pequeña para mujeres durante los años fue 12 y de los hombres 14, por lo tanto se hizo un nuevo dataset para estudiar con precisión lo que deseamos estudiar. Se ha filtrado de la base de datos de matrimonios los valores en donde la edad de la mujer era menor a 18 (por el objetivo) y mayor a 12 años (para eliminar los datos no significativos o no lógicos), asimismo se filtró los datos en donde el hombre es menor a 14 años (de igual manera para eliminar esos datos confusos).
+
 ```{r FiltroDeEdades, echo=FALSE}
 #install.packages("tidyverse")
 #library(tidyverse)
@@ -680,17 +727,13 @@ menorEdad <- menorEdadMuj %>% filter(EDADHOM >= 14)
 
 ```
 
-# ```{r minimos edades filtrado, echo=FALSE}
-# res1 <- top_n(menorEdad,-10,menorEdad$EDADMUJ)
-# print(res1$EDADMUJ)
-# ```
 
 ```{r CorrEdadesFiltro, echo=FALSE}
 plot(x = menorEdad$EDADHOM, y= menorEdad$EDADMUJ, xlab= "Edad del Hombre", ylab= "Edad de la mujer", main = "Correlación entre las edades, mujeres menores de 18")
 abline(lm(menorEdad$EDADMUJ ~ menorEdad$EDADHOM), col = "red")
 ```
-Filtrando los datos en donde las mujeres son menores a 18 años, es posible ber que una gran cantidad de mujeres se encuentran comprometidas con hombres mucho mayores a ellas, existen tados atípicos muy extensos y preocupantes, cabe mencionar que los datos que se encuentran en el fondo (muy pocos pero si existen) se encuentran así debido a que los datos no son indicados en el diagrama.
 
+Filtrando los datos en donde las mujeres son menores a 18 años, es posible observar que una gran cantidad de mujeres se encuentran comprometidas con hombres mucho mayores a ellas, existen datos atípicos muy extensos y preocupantes, cabe mencionar que los datos que se encuentran en el fondo (muy pocos pero si existen) se encuentran así debido a que los datos no son indicados en el diagrama.
 
 ## departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
 ```{r tabla por departamentos del dataset, echo = FALSE}
@@ -702,7 +745,8 @@ menorEdadGraph <- menorEdad %>% filter(EDADHOM >= 18)
 #departamentos
 table(menorEdadGraph$DEPOCU)
 ```
-Muchos de estos se llevan a cabo en el departamento de Guatemala, donde una gran población son ladinos.
+
+Puede observarse que muchos de estos matrimonios se llevan a cabo en el departamento de Guatemala, donde una gran población son ladinos.
 
 ## Municipios en donde se llevan a cabo los matrimonios de mujeres menores de edad
 ```{r tabla por municipios de casamientos, echo = FALSE}
@@ -717,6 +761,8 @@ table(depMun)
 
 ```
 
+De la misma manera, puede observarse que la mayor cantidad de ocurrencias se encuentra en Guatemala.
+
 #La etnia de la mujer en donde es más común este evento
 ```{r tabla por etnia de la mujer, echo = FALSE}
 library(dplyr)
@@ -729,7 +775,8 @@ table(etniaMujer)
 #print(nrow(menorEdadGraph))
 
 ```
-Se puede observar que no hay una diferencia significativa en estos grupos, esto si importante para saber si es cultural
+
+Se puede observar que no hay una diferencia significativa en estos grupos, lo cual es importante para saber si el hecho de que ocurran los matrimonios con menores de edad, es algo que se ve influido por la cultura.
 
 #La etnia del hombre en donde es más común este evento
 ```{r tabla por etnia del hombre, echo = FALSE}
@@ -743,9 +790,9 @@ table(etniaHombre)
 #print(nrow(menorEdadGraph))
 
 ```
-Se puede observar que no hay una diferencia significativa en estos grupos, esto si importante para saber si es cultural
 
 
+Se puede observar que no hay una diferencia significativa en estos grupos, lo cual es importante para saber si el hecho de que ocurran los matrimonios con menores de edad, es algo que se ve influido por la cultura.
 
 #-----------------------------------Clustering--------------------------------
 
@@ -758,6 +805,7 @@ summary(datosClustering)
 Se trabajará con las siguientes variables que tienen formato int para formas grupos: AÑOREG, ALOOCU, EDADHOM,EDADMUJ. Esto debido a que son variables que se pueden clasificar por grupos y los resultados pueden ser interpretados.
 
 Para saber la mejor cantidad de clusters a utilizar, se hará lo siguiente:
+
 ```{r cantClusters, echo=FALSE}
 wss <- (nrow(datosClustering[,1:4])-1)*sum(apply(datosClustering[,1:4],2,var))
 
@@ -767,6 +815,7 @@ for (i in 2:10)
 plot(1:10, wss, type="b", xlab="Number of Clusters",  ylab="Within groups sum of squares")
 
 ```
+
 Puede observarse en el gráfico que el codo se encuentra en el valor 4, por lo que esta es la cantidad adecuada de clusters que se deben utilizar.
 
 ## Agrupamiento por medio de k-means  
