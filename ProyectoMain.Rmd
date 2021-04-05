@@ -901,7 +901,7 @@ summary(g4FCM)
 En el resúmer por fuzzy se puede identificar que la media de la edad de las mujeres parece ser constante, los años un poco variados pero en cierta manera se observa una relación entre año y edad del hombre.
 
 
-## evaluación de la tendencia de agrupamiento:
+## Evaluación de la tendencia de agrupamiento:
 En esté análisis de datos consiste en examinar si los datos son agrupables, es decir, si los datos contienen cualquier estructura de agrupación inherente. Esto debe comprobarse antes de aplicar el análisis de agrupación.
 
 Hopkins estadística: si el valor de Hopkins estadística está cerca de cero (muy por debajo de 0,5), entonces podemos concluir que el conjunto de datos es significativamente clusterable.
@@ -914,7 +914,7 @@ get_clust_tendency(datosMatrimonio, n = 50,
                    gradient = list(low = "steelblue",  high = "white"))
 ```
 
-#Elección de algoritmos de agrupación apropiados para los datos de matrimonios en Guatemala
+# Elección de algoritmos de agrupación apropiados para los datos de matrimonios en Guatemala
 
 ```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
 my_data <- scale(datosMatrimonio)
