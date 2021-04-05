@@ -9,7 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 #"C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos"
 #C:/Users/Andree/Documents/GitHub/
-#Ingebor Rubio/Desktop/Trabajos/Quinto Semestre/Mineria/Proyecto/ProyectoMineriaDatos
 
 knitr::opts_knit$set(root.dir="C:/Users/Andree/Documents/GitHub/ProyectoMineriaDatos")
 ```
@@ -549,6 +548,22 @@ En el siguiente cuadro se muestra el tipo de dato de cada variable:
 str(datosMatrimonio)
 ```
 
+```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
+memory.limit(size = 9999999999999999)
+my_data <- datosMatrimonio$EDADHOM
+# Remove any missing value (i.e, NA values for not available)
+my_data <- na.omit(my_data)
+# Scale variables
+my_data <- scale(my_data)
+# View the firt 3 rows
+head(my_data, n = 3)
+
+res.dist <- get_dist(datosMatrimonio$EDADHOM, stand = TRUE, method = "pearson")
+fviz_dist(res.dist, 
+   gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+
+```
+
 El dataset tiene 23 variables, el departamento, municipalidad, mes y año de registro, la casificación de la unión, las edades de los hombres y mujer, el grupo étnico de los hombres y mujeres, su nacionalidad, su oficio, la cantidad de nupcias de cada uno. Luego tambien se encuentran las variables de ocurrencia. el departamento, municipalidad, mes, año, area y dia de ocurrencia. Por último se encuentra la escolaridad de cada uno.
 Las variables más interesantes para el porpósito de la investigación son lass que proporcionan información de la fecha del matrimonio. Otras con gran potencial, son las edades de los cónyuges, ya que con ellas podemos analizar cual es la tendencia de matrimonios de menores, diferencias de edades etc.
 
@@ -606,14 +621,14 @@ ggplot(data = datosMatrimonio, aes(x = EDADHOM)) +
 En este histograma se puede observar que los datos tienen relativamente forma de campana, sin embargo, es evidente que estos tienen un sesgo hacia la izquierda, esto quiere decir que usualmente la edad entre los hombres en un matrimonio se encuentra debajo de los 30. Sin embargo, es importante mencionar que como dato interesante se puede observar que hay casos de matrimonios en hombres de más de 75 años. 
 Debido al sesgo, la edad de los hombres en matrimonios no sigue una distribución normal.
 
-### Diagrama de caja y bigotes
+###Diagrama de caja y bigotes
 ```{r normalBoxEdadHombre, echo=FALSE}
 boxplot(datosMatrimonio$EDADHOM, main = "Caja y Bigotes de edad de los hombres al casarse", xlab = "edad")
 ```
 
 Se evidencia la gran cantidad de datos atípicos en el diagrama, se encuentran muy dispersos arriba de la media y del extremo superior que se encuentra al rededor de los 30 años. Esto quiere decir que la edad de los hombres en el matrimonio no sigue una distribución normal.
 
-### Diagrama qqnormal
+###Diagrama qqnormal
 ```{r normalQQEdadHombre, echo=FALSE}
 qqnorm(datosMatrimonio$EDADHOM, col="blue")
 qqline(datosMatrimonio$EDADHOM, col="red")
@@ -640,14 +655,14 @@ ggplot(data = datosMatrimonio, aes(x = EDADMUJ)) +
 
 De la misma manera que en el histograma de hombres, hay una forma relativa de campana, sin embargo se nota un gran sesgo a la izquierda que demuestra que la edad de mujeres en el matrimonio suele ser debajo de los 25, aunque también se cuentan con algunos datos arriba de los 75 años. Debido al sesgo, la edad de mujeres en el matrimonio no sigue una distribución normal.
 
-### Diagrama de caja y bigotes
+###Diagrama de caja y bigotes
 ```{r normalBoxEdadMujer, echo=FALSE}
 boxplot(datosMatrimonio$EDADMUJ, main = "Caja y Bigotes de edad de las mujeres al casarse", xlab = "edad")
 ```
 
 En este diagrama de caja y bigotes es posible ver una gran cantidad de datos atípicos arriba del extremo superior que se encuentra al rededor de los 30 años, muy similar al diagrama de la edad de los hombres, por lo que de la misma manera no se cuenta con normalidad en la edad de las mujeres en el matrimonio.
 
-### Diagrama qqnormal
+###Diagrama qqnormal
 ```{r normalQQEdadMujer, echo=FALSE}
 qqnorm(datosMatrimonio$EDADMUJ, col="blue")
 qqline(datosMatrimonio$EDADMUJ, col="red")
@@ -666,7 +681,7 @@ En conclusión, la edad de las mujeres en el matrimonio no sigue una distribuci�
 table(datosMatrimonio$DEPOCU)
 ```
 
-Como puede observarse, el departamento en el que suele haber más matrimonios es en Guatemala, seguido por Huehuetenango y luego por Alta Verapaz.
+Como puede observarse, el departamento en el que suele haber más matrimonios es en Guatemala, seguido por Huehuetenango y luego por Alta Verapaz. El departamento en el que hay menos matrimonios es petén, con un registro de 1656 ocurrencias.
 
 ### Tabla de frecuencias para el municipio de ocurrencia
 ```{r frecuenciaMunicipio, echo=FALSE}
@@ -684,7 +699,7 @@ De la misma manera, es Guatemala el municipio que cuenta con la mayor cantidad d
 table(datosMatrimonio$ESCHOM)
 ```
 
-Como puede observarse, el nivel de escolaridad más común entre los hombres es primaria, con 255,480 casos, mientras que el más bajo es el de post grado con 181 casos.
+Como puede observarse, el nivel de escolaridad más común entre los hombres es primaria, con 255,480 casos, mientras que el más bajo es el de post grado con 46 casos.
 
 ### Tabla de frecuencias para la escolaridad de la Mujer
 ```{r frecuenciaEscolaridadMujer, echo=FALSE}
@@ -693,7 +708,7 @@ Como puede observarse, el nivel de escolaridad más común entre los hombres es 
 table(datosMatrimonio$ESCMUJ)
 ```
 
-Como puede observarse, el nivel de escolaridad más común entre las mujeres es primaria, con 222076 casos, mientras que el más bajo es el de post grado con 126 casos.
+Como puede observarse, el nivel de escolaridad más común entre las mujeres es primaria, con 222076 casos, mientras que el más bajo es el de post grado con 33 casos.
 
 ### Tabla de frecuencias para el grupo étnico del hombre
 ```{r frecuenciaEtniaHombre, echo=FALSE}
@@ -741,7 +756,7 @@ abline(lm(menorEdad$EDADMUJ ~ menorEdad$EDADHOM), col = "red")
 
 Filtrando los datos en donde las mujeres son menores a 18 años, es posible observar que una gran cantidad de mujeres se encuentran comprometidas con hombres mucho mayores a ellas, existen datos atípicos muy extensos y preocupantes, cabe mencionar que los datos que se encuentran en el fondo (muy pocos pero si existen) se encuentran así debido a que los datos no son indicados en el diagrama.
 
-## Departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
+## departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
 ```{r tabla por departamentos del dataset, echo = FALSE}
 library(dplyr)
 library(magrittr)
@@ -769,7 +784,7 @@ table(depMun)
 
 De la misma manera, puede observarse que la mayor cantidad de ocurrencias se encuentra en Guatemala.
 
-## La etnia de la mujer en donde es más común este evento
+#La etnia de la mujer en donde es más común este evento
 ```{r tabla por etnia de la mujer, echo = FALSE}
 library(dplyr)
 library(magrittr)
@@ -784,7 +799,7 @@ table(etniaMujer)
 
 Se puede observar que no hay una diferencia significativa en estos grupos, lo cual es importante para saber si el hecho de que ocurran los matrimonios con menores de edad, es algo que se ve influido por la cultura.
 
-## La etnia del hombre en donde es más común este evento
+#La etnia del hombre en donde es más común este evento
 ```{r tabla por etnia del hombre, echo = FALSE}
 library(dplyr)
 library(magrittr)
@@ -800,7 +815,7 @@ table(etniaHombre)
 
 Se puede observar que no hay una diferencia significativa en estos grupos, lo cual es importante para saber si el hecho de que ocurran los matrimonios con menores de edad, es algo que se ve influido por la cultura.
 
-# -----------------------------------Clustering--------------------------------
+#-----------------------------------Clustering--------------------------------
 
 ```{r Preprocesamiento, echo=FALSE}
 menorEdad$AÑOOCU <- as.numeric(factor(menorEdad$AÑOOCU))
@@ -908,26 +923,18 @@ En esté análisis de datos consiste en examinar si los datos son agrupables, es
 Hopkins estadística: si el valor de Hopkins estadística está cerca de cero (muy por debajo de 0,5), entonces podemos concluir que el conjunto de datos es significativamente clusterable.
 VAT (evaluación visual de la tendencia de agrupamiento): la cubeta detecta la tendencia de agrupamiento en una forma visual contando el número de bloques oscuros (o coloreados) de forma cuadrada a lo largo de la diagonal en una imagen de cuba.
 
-```{r Evaluacion de la tendencia de agrupamiento, echo=FALSE}
-
-datosMatrimonio <- scale(iris[, -5])
-get_clust_tendency(datosMatrimonio, n = 50,
-                   gradient = list(low = "steelblue",  high = "white"))
+```{r Evaluacion de la tendencia de agrupamiento:cluster jerarquico, echo=FALSE}
+clorax <- clara(datosMatrimonio$EDADHOM , 3)
+clarax <- clara(datosMatrimonio$EDADMUJ , 3)
+# Cluster plot
+plot(silhouette(clorax),  col = 2:3, main = "Silhouette plot")  
+plot(silhouette(clarax),  col = 2:3, main = "Silhouette plot")  
 ```
 
 # Elección de algoritmos de agrupación apropiados para los datos de matrimonios en Guatemala
 
-```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
-my_data <- scale(datosMatrimonio)
-# Compute clValid
 
-intern <- clValid(my_data, nClust = 2:6, 
-              clMethods = c("hierarchical","kmeans","pam",'clara'),
-              validation = "internal")
-# Summary
-summary(intern)
-plot(intern)
-```
+
 
 
 
