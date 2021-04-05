@@ -899,7 +899,10 @@ summary(g4FCM)
 En el resúmer por fuzzy se puede identificar que la media de la edad de las mujeres parece ser constante, los años un poco variados pero en cierta manera se observa una relación entre año y edad del hombre.
 
 ```{r nalisis de cada grupo fuzzy c means, echo=FALSE}
-datosMatrimonio
+
+res.dist <- get_dist(datosMatrimonio, stand = TRUE, method = "pearson")
+fviz_dist(res.dist, 
+   gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
 ```
 
 
