@@ -898,19 +898,10 @@ summary(g4FCM)
 
 En el resúmer por fuzzy se puede identificar que la media de la edad de las mujeres parece ser constante, los años un poco variados pero en cierta manera se observa una relación entre año y edad del hombre.
 
-```{r  Determinacion optima del numero de cluster, echo=FALSE}
-fviz_nbclust(datosMatrimonio, kmeans, method = "gap_stat")
-```
+#```{r  Determinacion optima del numero de cluster, echo=FALSE}
+#fviz_nbclust(datosMatrimonio, kmeans, method = "gap_stat")
+#```
 
-
-```{r cluster jerarquico, echo=FALSE}
-
-clarax <- clara(datosMatrimonio, 3)
-# Cluster plot
-fviz_cluster(clarax, stand = T, geom = "point",
-             pointsize = 1)
-
-```
 
 
 ```{r Evaluacion de la tendencia de agrupamiento, echo=FALSE}
@@ -920,9 +911,25 @@ get_clust_tendency(datosMatrimonio, n = 50,
                    gradient = list(low = "steelblue",  high = "white"))
 ```
 
+```{r denograma, echo=FALSE}
+# 1. Loading and preparing data
+data("USArrests")
+my_data <- scale(datosMatrimonio)
+# 2. Compute dissimilarity matrix
+d <- dist(my_data, method = "euclidean")
+# Hierarchical clustering using Ward's method
+res.hc <- hclust(d, method = "ward.D2" )
+# Cut tree into 4 groups
+grp <- cutree(res.hc, k = 4)
+# Visualize
+plot(res.hc, cex = 0.6) # plot tree
+rect.hclust(res.hc, k = 4, border = 2:5) # add rectangle
+```
+
+
 
 ```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
-my_data <- scale(USArrests)
+my_data <- scale(datosMatrimonio)
 # Compute clValid
 library("clValid")
 intern <- clValid(my_data, nClust = 2:6, 
@@ -932,6 +939,8 @@ intern <- clValid(my_data, nClust = 2:6,
 summary(intern)
 plot(intern)
 ```
+
+
 
 
 
