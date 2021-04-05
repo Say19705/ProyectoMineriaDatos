@@ -548,22 +548,6 @@ En el siguiente cuadro se muestra el tipo de dato de cada variable:
 str(datosMatrimonio)
 ```
 
-```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
-memory.limit(size = 9999999999999999)
-my_data <- datosMatrimonio$EDADHOM
-# Remove any missing value (i.e, NA values for not available)
-my_data <- na.omit(my_data)
-# Scale variables
-my_data <- scale(my_data)
-# View the firt 3 rows
-head(my_data, n = 3)
-
-res.dist <- get_dist(datosMatrimonio$EDADHOM, stand = TRUE, method = "pearson")
-fviz_dist(res.dist, 
-   gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
-
-```
-
 El dataset tiene 23 variables, el departamento, municipalidad, mes y año de registro, la casificación de la unión, las edades de los hombres y mujer, el grupo étnico de los hombres y mujeres, su nacionalidad, su oficio, la cantidad de nupcias de cada uno. Luego tambien se encuentran las variables de ocurrencia. el departamento, municipalidad, mes, año, area y dia de ocurrencia. Por último se encuentra la escolaridad de cada uno.
 Las variables más interesantes para el porpósito de la investigación son lass que proporcionan información de la fecha del matrimonio. Otras con gran potencial, son las edades de los cónyuges, ya que con ellas podemos analizar cual es la tendencia de matrimonios de menores, diferencias de edades etc.
 
@@ -920,20 +904,27 @@ En el resúmer por fuzzy se puede identificar que la media de la edad de las muj
 ## Evaluación de la tendencia de agrupamiento:
 En esté análisis de datos consiste en examinar si los datos son agrupables, es decir, si los datos contienen cualquier estructura de agrupación inherente. Esto debe comprobarse antes de aplicar el análisis de agrupación.
 
-Hopkins estadística: si el valor de Hopkins estadística está cerca de cero (muy por debajo de 0,5), entonces podemos concluir que el conjunto de datos es significativamente clusterable.
-VAT (evaluación visual de la tendencia de agrupamiento): la cubeta detecta la tendencia de agrupamiento en una forma visual contando el número de bloques oscuros (o coloreados) de forma cuadrada a lo largo de la diagonal en una imagen de cuba.
+Hopkins estadística: si el valor de Hopkins estadística está cerca de cero muy por debajo de 0,5, entonces podemos concluir que el conjunto de datos es significativamente clusterable.
+VAT evaluación visual de la tendencia de agrupamiento: la cubeta detecta la tendencia de agrupamiento en una forma visual contando el número de bloques oscuros o coloreados de forma cuadrada a lo largo de la diagonal en una imagen de rectangulos.
 
+### En hombres
 ```{r Evaluacion de la tendencia de agrupamiento:cluster jerarquico, echo=FALSE}
-clorax <- clara(datosMatrimonio$EDADHOM , 3)
+
 clarax <- clara(datosMatrimonio$EDADMUJ , 3)
 # Cluster plot
-plot(silhouette(clorax),  col = 2:3, main = "Silhouette plot")  
+  
 plot(silhouette(clarax),  col = 2:3, main = "Silhouette plot")  
 ```
 
-# Elección de algoritmos de agrupación apropiados para los datos de matrimonios en Guatemala
+### En mujeres
 
+```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
 
+clorax <- clara(datosMatrimonio$EDADHOM , 3)
+
+# Cluster plot
+plot(silhouette(clorax),  col = 2:3, main = "Silhouette plot")
+```
 
 
 
