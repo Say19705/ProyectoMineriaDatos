@@ -900,9 +900,7 @@ En el resúmer por fuzzy se puede identificar que la media de la edad de las muj
 
 ```{r nalisis de cada grupo fuzzy c means, echo=FALSE}
 
-res.dist <- get_dist(datosMatrimonio, stand = TRUE, method = "pearson")
-fviz_dist(res.dist, 
-   gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+fviz_nbclust(my_data, kmeans, method = "gap_stat")
 ```
 
 
