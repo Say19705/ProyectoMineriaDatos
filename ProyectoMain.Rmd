@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #"C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos"
 #C:/Users/Andree/Documents/GitHub/
 
-knitr::opts_knit$set(root.dir="C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos")
+knitr::opts_knit$set(root.dir="C:/Users/Andree/Documents/GitHub/ProyectoMineriaDatos")
 ```
 
 # Proyecto No. 1. Análisis de matrimonios en Guatemala  
@@ -38,6 +38,8 @@ library(caret)
 library(magrittr)
 library(dplyr)
 library(plyr)
+
+library(cluster)
 library(dplyr)
 library(cluster)
 library(e1071)
@@ -895,6 +897,10 @@ summary(g4FCM)
 ```
 
 En el resúmer por fuzzy se puede identificar que la media de la edad de las mujeres parece ser constante, los años un poco variados pero en cierta manera se observa una relación entre año y edad del hombre.
+
+```{r nalisis de cada grupo fuzzy c means, echo=FALSE}
+datosMatrimonio
+```
 
 
 
