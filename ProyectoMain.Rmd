@@ -69,6 +69,7 @@ library(rpart)
 library(e1071)
 
 library(haven)
+
 library(clValid)
 
 datos2009 <- read_sav("datosMat2009.sav")
@@ -899,40 +900,26 @@ summary(g4FCM)
 
 En el resúmer por fuzzy se puede identificar que la media de la edad de las mujeres parece ser constante, los años un poco variados pero en cierta manera se observa una relación entre año y edad del hombre.
 
-#```{r  Determinacion optima del numero de cluster, echo=FALSE}
-#fviz_nbclust(datosMatrimonio, kmeans, method = "gap_stat")
-#```
 
+## evaluación de la tendencia de agrupamiento:
+En esté análisis de datos consiste en examinar si los datos son agrupables, es decir, si los datos contienen cualquier estructura de agrupación inherente. Esto debe comprobarse antes de aplicar el análisis de agrupación.
 
+Hopkins estadística: si el valor de Hopkins estadística está cerca de cero (muy por debajo de 0,5), entonces podemos concluir que el conjunto de datos es significativamente clusterable.
+VAT (evaluación visual de la tendencia de agrupamiento): la cubeta detecta la tendencia de agrupamiento en una forma visual contando el número de bloques oscuros (o coloreados) de forma cuadrada a lo largo de la diagonal en una imagen de cuba.
 
-+```{r Evaluacion de la tendencia de agrupamiento, echo=FALSE}
+```{r Evaluacion de la tendencia de agrupamiento, echo=FALSE}
 
 datosMatrimonio <- scale(iris[, -5])
 get_clust_tendency(datosMatrimonio, n = 50,
                    gradient = list(low = "steelblue",  high = "white"))
 ```
 
-```{r denograma, echo=FALSE}
-# 1. Loading and preparing data
-data("USArrests")
-my_data <- scale(datosMatrimonio)
-# 2. Compute dissimilarity matrix
-d <- dist(my_data, method = "euclidean")
-# Hierarchical clustering using Ward's method
-res.hc <- hclust(d, method = "ward.D2" )
-# Cut tree into 4 groups
-grp <- cutree(res.hc, k = 4)
-# Visualize
-plot(res.hc, cex = 0.6) 
-rect.hclust(res.hc, k = 4, border = 2:5)
-```
-
-
+#Elección de algoritmos de agrupación apropiados para los datos de matrimonios en Guatemala
 
 ```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
 my_data <- scale(datosMatrimonio)
 # Compute clValid
-library("clValid")
+
 intern <- clValid(my_data, nClust = 2:6, 
               clMethods = c("hierarchical","kmeans","pam",'clara'),
               validation = "internal")
