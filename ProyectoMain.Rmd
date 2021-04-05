@@ -905,7 +905,7 @@ fviz_nbclust(datosMatrimonio, kmeans, method = "gap_stat")
 
 ```{r cluster jerarquico, echo=FALSE}
 
-clarax <- clara(my_data, 3)
+clarax <- clara(datosMatrimonio, 3)
 # Cluster plot
 fviz_cluster(clarax, stand = T, geom = "point",
              pointsize = 1)
@@ -913,16 +913,24 @@ fviz_cluster(clarax, stand = T, geom = "point",
 ```
 
 
-```{r nalisis de cada grupo fuzzy c means, echo=FALSE}
+```{r Evaluacion de la tendencia de agrupamiento, echo=FALSE}
 
-plot(silhouette(clarax),  col = 2:3, main = "Silhouette plot")  
+datosMatrimonio <- scale(iris[, -5])
+get_clust_tendency(datosMatrimonio, n = 50,
+                   gradient = list(low = "steelblue",  high = "white"))
 ```
 
 
-```{r nalisis de cada grupo fuzzy c means, echo=FALSE}
-
-
-fviz_nbclust(datosMatrimonio, kmeans, method = "gap_stat")
+```{r elegir los algoritmos de agrupación apropiados, echo=FALSE}
+my_data <- scale(USArrests)
+# Compute clValid
+library("clValid")
+intern <- clValid(my_data, nClust = 2:6, 
+              clMethods = c("hierarchical","kmeans","pam",'clara'),
+              validation = "internal")
+# Summary
+summary(intern)
+plot(intern)
 ```
 
 
