@@ -69,6 +69,7 @@ library(rpart)
 library(e1071)
 
 library(haven)
+library(clValid)
 
 datos2009 <- read_sav("datosMat2009.sav")
 datos2010 <- read_sav("datosMat2010.sav")
@@ -904,7 +905,7 @@ En el resúmer por fuzzy se puede identificar que la media de la edad de las muj
 
 
 
-```{r Evaluacion de la tendencia de agrupamiento, echo=FALSE}
++```{r Evaluacion de la tendencia de agrupamiento, echo=FALSE}
 
 datosMatrimonio <- scale(iris[, -5])
 get_clust_tendency(datosMatrimonio, n = 50,
@@ -922,8 +923,8 @@ res.hc <- hclust(d, method = "ward.D2" )
 # Cut tree into 4 groups
 grp <- cutree(res.hc, k = 4)
 # Visualize
-plot(res.hc, cex = 0.6) # plot tree
-rect.hclust(res.hc, k = 4, border = 2:5) # add rectangle
+plot(res.hc, cex = 0.6) 
+rect.hclust(res.hc, k = 4, border = 2:5)
 ```
 
 
