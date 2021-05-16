@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #"C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos"
 #C:/Users/Andree/Documents/GitHub/
 
-knitr::opts_knit$set(root.dir="C:/Users/Andree/Documents/GitHub/ProyectoMineriaDatos")
+knitr::opts_knit$set(root.dir="C:/Users/andre/OneDrive/Documentos/3er año/1er semestre/Minería de datos/proyecto/ProyectoMineriaDatos")
 ```
 
 # Proyecto No. 1. Análisis de matrimonios en Guatemala  
@@ -35,6 +35,8 @@ Luego de agregar estar columnas se ha hecho las modificaciones necesarias en el 
 
 
 ```{r, echo=FALSE}
+options(java.parameters = "-Xmx1024m")
+library(RWeka)
 library(e1071)
 library(caret)
 library(magrittr)
@@ -946,6 +948,61 @@ forma de matrimonio forzoso, ya que no se cuenta con el consentimiento pleno, li
 Dentro de la información generada a partir de los datos del INE, sobre los años de las mujeres que han contraido matrimonio de 12 a 25 años de edad se observa que, en la categoría de casadas, los porcentajes más altos se encuentran en las mujeres del rango de 21 a 25 años, de igual manera en la categoría de alguna vez unida o casada, las mujeres en este rango de edad, representan más del 70%. Un 10% de quienes responden que están casadas son niñas y adolescentes del rango de 15 a 17 años, mientras que el 25.4% en esta categoría de casadas pertenece al rango de mujeres de 18 a 20 años. Se destaca que las más jóvenes, adolescentes de 12 a 14 años, representan un 3.5% de la categoría haber estado alguna vez casadas. Estos datos han variado a partir de las reformas impuestas en Reforma el artículo 81 del Código Civil, Decreto Ley 106, artículos: 81, relativo a la aptitud para contraer matrimonio y establece que la edad mínima para contraer matrimonio es de 18 años; 82, relativo a la excepción a la edad mínima y la establece en 16 años, cuando concurran razones fundadas; 84, relativo a la autorización judicial para que los menores de edad puedan contraer matrimonio; 177 en el que prohíbe la unión de menores de edad.Publicada el Lunes, 23 de noviembre del 2015.
 
 
+#----------Regresión lineal
 
 
+#---------------------------Apartado de predición----------------------------------
+
+Con el fin de poder investigar más a fondo bajo que criterios es más probable que en un casamiento se encuentre implicada una mujer menor de edad (que en el análisis anterior se evidenció era más recurrente que los hombres) se decidió untilizar ML para poder predecir si dado ciertas características una mujer será menor de edad en un matrimonio, para poder determinar en que lugares (o situaciones) debe ser atendido este problema.
+
+Con el objetivo de poder estudiar por categorias, se realizará una variable de clasificación adicional en el dataframe para poder llevar a cabo la predicción
+
+```{r Clasificación, echo=FALSE}
+datosMatrimonio$clasificacion <- ifelse(datosMatrimonio$EDADMUJ <= 17, "Menor", ifelse(datosMatrimonio$EDADMUJ >= 18, "Mayor",NA))
+datosMatrimonio$y <- factor(datosMatrimonio$clasificacion)
+```
+ss
+
+```{r Filtrado, echo=FALSE}
+datosML <- datosMatrimonio %>% filter(EDADMUJ >= 12)
+datosML <- datosML %>% filter(EDADHOM >= 14)
+datosML <- datosML[,-24]
+```
+
+
+```{r train and test, echo=FALSE}
+porciento <- 70/100
+set.seed(123)
+
+trainRowsNumber<-sample(nrow(datosML),porciento*nrow(datosML))
+train<-datosML[trainRowsNumber,]
+test<-datosML[-trainRowsNumber,]
+```
+
+
+```{r Rweka clasificación, echo=FALSE}
+datosML <- lapply(datosML, as.factor)
+NB <- make_Weka_classifier("weka/classifiers/functions/MultilayerPerceptron")
+NB 
+WOW(NB)
+nnodos='23'
+
+modelo.bp<-NB(datosML$y~., data=datosML,subset = trainRowsNumber, control=Weka_control(H=nnodos, N=1000, G=TRUE), options=NULL)
+test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:23])
+cfmWeka<-confusionMatrix(test$prediccionWeka,test$y)
+cfmWeka
+```
+
+```{r nnet clasificación, echo=FALSE}
+
+
+modelo.nn2 <- nnet(datosML$y~.,data = datosML,subset = trainRowsNumber, size=2, rang=0.1,
+                   decay=5e-4, maxit=200) 
+prediccion2 <- as.data.frame(predict(modelo.nn2, newdata = test[,1:23]))
+columnaMasAlta<-apply(prediccion2, 1, function(x) colnames(prediccion2)[which.max(x)])
+test$prediccion2<-columnaMasAlta 
+
+cfm<-confusionMatrix(as.factor(test$prediccion2),test$y)
+cfm
+```
 
