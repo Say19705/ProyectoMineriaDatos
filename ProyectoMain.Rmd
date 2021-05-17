@@ -3,8 +3,8 @@ title: "Proyecto de Minería de datos. Matrimonios de Guatemala"
 author: "Ayleen Rubio 19003, Andrés Say 19705, Andreé Toledo 18439"
 date: "25/3/2021"
 output:
-  word_document: default
   html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -35,7 +35,8 @@ Luego de agregar estar columnas se ha hecho las modificaciones necesarias en el 
 
 
 ```{r, echo=FALSE}
-options(java.parameters = "-Xmx1024m")
+options(java.parameters = c("-XX:+UseConcMarkSweepGC", "-Xmx8192m"))
+library(xlsx)
 library(RWeka)
 library(e1071)
 library(caret)
@@ -967,6 +968,28 @@ ss
 datosML <- datosMatrimonio %>% filter(EDADMUJ >= 12)
 datosML <- datosML %>% filter(EDADHOM >= 14)
 datosML <- datosML[,-24]
+datosML <- datosML[,-7]
+#
+datosML$DEPREG <- as.factor(datosML$DEPREG)
+datosML$MUPREG <- as.factor(datosML$MUPREG)
+datosML$MESREG <- as.factor(datosML$MESREG)
+datosML$CLAUNI <- as.factor(datosML$CLAUNI)
+datosML$GETHOM <- as.factor(datosML$GETHOM)
+datosML$GETMUJ <- as.factor(datosML$GETMUJ)
+datosML$NACHOM <- as.factor(datosML$NACHOM)
+datosML$NACMUJ <- as.factor(datosML$NACMUJ)
+datosML$CIUOHOM <- as.factor(datosML$CIUOHOM)
+datosML$CIUOMUJ <- as.factor(datosML$CIUOMUJ)
+datosML$NUNUHO <- as.factor(datosML$NUNUHO)
+datosML$NUNUMU <- as.factor(datosML$NUNUMU)
+datosML$DEPOCU <- as.factor(datosML$DEPOCU)
+datosML$MUPOCU <- as.factor(datosML$MUPOCU)
+datosML$MESOCU <- as.factor(datosML$MESOCU)
+datosML$AREAGOCU <- as.factor(datosML$AREAGOCU)
+datosML$ESCHOM <- as.factor(datosML$ESCHOM)
+datosML$ESCMUJ <- as.factor(datosML$ESCMUJ)
+datosML$DIAOCU <- as.factor(datosML$DIAOCU)
+datosML$AÑOOCU <- as.factor(datosML$AÑOOCU)
 ```
 
 
@@ -977,32 +1000,37 @@ set.seed(123)
 trainRowsNumber<-sample(nrow(datosML),porciento*nrow(datosML))
 train<-datosML[trainRowsNumber,]
 test<-datosML[-trainRowsNumber,]
+rm(l)
+rm(datosMatrimonio)
+rm(datos2009)
+rm(datos2010)
+rm(datos2011)
+rm(datos2012)
+rm(datos2013)
+rm(datos2014)
+rm(datos2015)
+rm(datos2016)
+rm(datos2017)
+rm(datos2018)
+rm(datos2019)
 ```
+
 
 
 ```{r Rweka clasificación, echo=FALSE}
-datosML <- lapply(datosML, as.factor)
+#datosML <- lapply(datosML, as.factor)
 NB <- make_Weka_classifier("weka/classifiers/functions/MultilayerPerceptron")
 NB 
 WOW(NB)
-nnodos='23'
+nnodos='22'
 
 modelo.bp<-NB(datosML$y~., data=datosML,subset = trainRowsNumber, control=Weka_control(H=nnodos, N=1000, G=TRUE), options=NULL)
-test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:23])
+test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:22])
 cfmWeka<-confusionMatrix(test$prediccionWeka,test$y)
 cfmWeka
 ```
+Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 65% en donde, si se observa la matriz de confusión, el algoritmo realmente predijo que todas las mujeres en base a los datos de test serían mayores de edad, situación que evidentemente no sucede, es posible que esto se deba a que los datos no muestran realmente un patrón evidente en el cuál se identifique un set de características para poder diferenciar estos dos grupos.
 
-```{r nnet clasificación, echo=FALSE}
 
 
-modelo.nn2 <- nnet(datosML$y~.,data = datosML,subset = trainRowsNumber, size=2, rang=0.1,
-                   decay=5e-4, maxit=200) 
-prediccion2 <- as.data.frame(predict(modelo.nn2, newdata = test[,1:23]))
-columnaMasAlta<-apply(prediccion2, 1, function(x) colnames(prediccion2)[which.max(x)])
-test$prediccion2<-columnaMasAlta 
-
-cfm<-confusionMatrix(as.factor(test$prediccion2),test$y)
-cfm
-```
 
