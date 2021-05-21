@@ -95,15 +95,15 @@ datos2019 <- read_sav("datosMat2019.sav")
 #Crear columnas en dataset 2009 ESCHOM, ESCMUJ y DIAOCU
 ESCHOM <- rnorm(nrow(datos2009))
 datos2009 <- cbind(datos2009, ESCHOM)
-datos2009$ESCHOM <- "None"
+datos2009$ESCHOM <- "Ignorado"
 
 ESCMUJ <- rnorm(nrow(datos2009))
 datos2009 <- cbind(datos2009, ESCMUJ)
-datos2009$ESCMUJ <- "None"
+datos2009$ESCMUJ <- "Ignorado"
 
 DIAOCU <- rnorm(nrow(datos2009))
 datos2009 <- cbind(datos2009, DIAOCU)
-datos2009$DIAOCU <- "None"
+datos2009$DIAOCU <- "Ignorado"
 #View(datos2009)
 
 #cambiar los nombres de NUPHON, NUPMUJ a NUNUHO, NUNUMU 2009
@@ -120,6 +120,7 @@ for(i in 1:length(cnames)){
     nombresN[i] <- cnames[i]
   }
 }
+
 colnames(datos2009) <- nombresN
 
 #cambiar AREAG por AREAGOCU, OCUHOM, OCUMUJ por CIUOHOM, CIUOMUJ
@@ -535,10 +536,37 @@ datos2018 <- datos2018 %>%
 datos2019 <- datos2019 %>%
   mutate_if(is.labelled,list(as_factor))
 
+
+
 l = list(datos2009,datos2010,datos2011,datos2012,datos2013,datos2014,datos2015,datos2016,datos2017,datos2018,datos2019)
 datosMatrimonio <- do.call("rbind",l)
 datosMatrimonio$EDADHOM <- as.numeric(factor(datosMatrimonio$EDADHOM))
 datosMatrimonio$EDADMUJ <- as.numeric(factor(datosMatrimonio$EDADMUJ))
+
+datosMatrimonio$ESCHOM <- ifelse(datosMatrimonio$ESCHOM == "DIversificado","Diversificado",datosMatrimonio$ESCHOM)
+datosMatrimonio$ESCHOM <- ifelse(datosMatrimonio$ESCHOM == "Post Grado","Universitario",datosMatrimonio$ESCHOM)
+datosMatrimonio$ESCHOM <- ifelse(datosMatrimonio$ESCHOM == "Postgrado","Universitario",datosMatrimonio$ESCHOM)
+datosMatrimonio$ESCMUJ <- ifelse(datosMatrimonio$ESCMUJ == "DIversificado","Diversificado",datosMatrimonio$ESCMUJ)
+datosMatrimonio$ESCMUJ <- ifelse(datosMatrimonio$ESCMUJ == "Post Grado","Universitario",datosMatrimonio$ESCMUJ)
+datosMatrimonio$ESCMUJ <- ifelse(datosMatrimonio$ESCMUJ == "Postgrado","Universitario",datosMatrimonio$ESCMUJ)
+
+
+datosMatrimonio$DEPOCU <- levels(datosMatrimonio$DEPOCU)[datosMatrimonio$DEPOCU]
+
+datosMatrimonio$DEPOCU <- ifelse(datosMatrimonio$DEPOCU == "Totonicapán","Totonicapan",datosMatrimonio$DEPOCU)
+datosMatrimonio$DEPOCU <- ifelse(datosMatrimonio$DEPOCU == "Petén","Peten",datosMatrimonio$DEPOCU)
+
+datosMatrimonio$DEPOCU <- factor(datosMatrimonio$DEPOCU)
+
+datosMatrimonio$GETHOM <- levels(datosMatrimonio$GETHOM)[datosMatrimonio$GETHOM]
+datosMatrimonio$GETMUJ <- levels(datosMatrimonio$GETMUJ)[datosMatrimonio$GETMUJ]
+
+datosMatrimonio$GETHOM <- ifelse(datosMatrimonio$GETHOM == "No Indigena", "No indigena",datosMatrimonio$GETHOM)
+datosMatrimonio$GETMUJ <- ifelse(datosMatrimonio$GETMUJ == "No Indigena", "No indigena",datosMatrimonio$GETMUJ)
+
+datosMatrimonio$GETHOM <- factor(datosMatrimonio$GETHOM)
+datosMatrimonio$GETMUJ <- factor(datosMatrimonio$GETMUJ)
+
 ```
 ## Informe de análisis exploratorio 
 En este informe usted podrá leer los hallazgos sobre los matrimonios, basado en los datos obtenidos del INE
@@ -954,15 +982,16 @@ Dentro de la información generada a partir de los datos del INE, sobre los año
 
 #---------------------------Apartado de predición----------------------------------
 
-Con el fin de poder investigar más a fondo bajo que criterios es más probable que en un casamiento se encuentre implicada una mujer menor de edad (que en el análisis anterior se evidenció era más recurrente que los hombres) se decidió untilizar ML para poder predecir si dado ciertas características una mujer será menor de edad en un matrimonio, para poder determinar en que lugares (o situaciones) debe ser atendido este problema.
+Con el fin de poder investigar más a fondo bajo que criterios es más probable que en un casamiento se encuentre implicada una mujer menor de edad (que en el análisis anterior se evidenció era más recurrente que los hombres) se decidió untilizar ML para poder predecir si dadas ciertas características una mujer será menor de edad en un matrimonio, para poder determinar en que lugares (o situaciones) debe ser atendido este problema.
 
-Con el objetivo de poder estudiar por categorias, se realizará una variable de clasificación adicional en el dataframe para poder llevar a cabo la predicción
+Con el objetivo de poder estudiar por categorias, se realizará una variable de clasificación adicional en el dataframe para poder llevar a cabo la predicción, en este caso se separó por menores y mayores de edad
 
 ```{r Clasificación, echo=FALSE}
 datosMatrimonio$clasificacion <- ifelse(datosMatrimonio$EDADMUJ <= 17, "Menor", ifelse(datosMatrimonio$EDADMUJ >= 18, "Mayor",NA))
 datosMatrimonio$y <- factor(datosMatrimonio$clasificacion)
 ```
-ss
+
+A su vez, es necesario convertir todos los datos a factores para poder hacer un análisis con RWEKA
 
 ```{r Filtrado, echo=FALSE}
 datosML <- datosMatrimonio %>% filter(EDADMUJ >= 12)
@@ -992,6 +1021,7 @@ datosML$DIAOCU <- as.factor(datosML$DIAOCU)
 datosML$AÑOOCU <- as.factor(datosML$AÑOOCU)
 ```
 
+Luego, hacemos los conjuntos de entrenamiento y prueba y se borran las bases de datos de cada año individuales para liberar espacio en la memoria de R
 
 ```{r train and test, echo=FALSE}
 porciento <- 70/100
@@ -1015,7 +1045,21 @@ rm(datos2018)
 rm(datos2019)
 ```
 
+## Segundo análisis de datos
+Debido a que al tratar de hacer las predicciones se ha contado con errores debido a la gran cantidad que se está manejando, se ha decidido verificar cuáles son las variables más significativas y que no tengan correlación entre sí para poder eliminar las que no son completamente necesarias y hacer el procedimiento de predicción más sencillo.
 
+### Diagrama de correlación
+```{r corrvar, echo=FALSE}
+library(corrplot)
+#cor(datosML, method = c("spearman"))
+#correlacionMatriz <- cor(datosML)
+#corrplot(correlacionMatriz, method = 'square')
+#cor(datosML)
+
+```
+
+
+## Prediccion por redes neuronales: RWEKA
 
 ```{r Rweka clasificación, echo=FALSE}
 #datosML <- lapply(datosML, as.factor)
@@ -1024,7 +1068,7 @@ NB
 WOW(NB)
 nnodos='22'
 
-modelo.bp<-NB(datosML$y~., data=datosML,subset = trainRowsNumber, control=Weka_control(H=nnodos, N=1000, G=TRUE), options=NULL)
+modelo.bp<-NB(datosML$y~., data=datosML,subset = trainRowsNumber, control=Weka_control(H=nnodos, N=100, G=TRUE), options=NULL)
 test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:22])
 cfmWeka<-confusionMatrix(test$prediccionWeka,test$y)
 cfmWeka
@@ -1032,5 +1076,17 @@ cfmWeka
 Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 65% en donde, si se observa la matriz de confusión, el algoritmo realmente predijo que todas las mujeres en base a los datos de test serían mayores de edad, situación que evidentemente no sucede, es posible que esto se deba a que los datos no muestran realmente un patrón evidente en el cuál se identifique un set de características para poder diferenciar estos dos grupos.
 
 
+## Prediccion por medio de árboles de decisión
+
+Cargaremos los valores de nuevo, ya que en este caso no es necesario tener cada una de las variables como un factor.
+
+```{r arboles, echo=FALSE}
+
+
+```
+
+
+
+## Predicción por medio de Naive Bayes
 
 
