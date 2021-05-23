@@ -1082,7 +1082,12 @@ Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 65% en don
 Cargaremos los valores de nuevo, ya que en este caso no es necesario tener cada una de las variables como un factor.
 
 ```{r arboles, echo=FALSE}
-
+ct <- trainControl(method = "cv", train[,1:13],number = 10, verboseIter = T)
+modelo <- train(y~., data = train, method = "rf", trControl = ct, na.action = na.exclude)
+prediccionfvc <- predict(modelorf, newdata = test[,1:13])
+test$predrfvc <- prediccionfvc
+cfmCaret <- confusionMatrix(test$predrfvc,test$y)
+cfmCaret
 
 ```
 
@@ -1090,4 +1095,14 @@ Cargaremos los valores de nuevo, ya que en este caso no es necesario tener cada 
 
 ## Predicción por medio de Naive Bayes
 
+```{r bayes, echo=FALSE}
+
+modelo <- naiveBayes(train$y~., data = train)
+predBayes <- predict(modelo, newdata = train[,1:13])
+cm<- caret::confusionMatrix(predBayes,train$y)
+cm
+predBayes <- predict(modelo, newdata = test[,1:13])
+cm <- caret::confusionMatrix(predBayes, test$y)
+cm
+```
 
