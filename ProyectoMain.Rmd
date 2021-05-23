@@ -1022,12 +1022,7 @@ datosML$AÑOOCU <- as.factor(datosML$AÑOOCU)
 Luego, hacemos los conjuntos de entrenamiento y prueba y se borran las bases de datos de cada año individuales para liberar espacio en la memoria de R
 
 ```{r train and test, echo=FALSE}
-porciento <- 70/100
-set.seed(123)
 
-trainRowsNumber<-sample(nrow(datosML),porciento*nrow(datosML))
-train<-datosML[trainRowsNumber,]
-test<-datosML[-trainRowsNumber,]
 rm(l)
 rm(datosMatrimonio)
 rm(datos2009)
@@ -1055,6 +1050,12 @@ Por lo que nos quedamos con los valores de: Clase de unión, edad del hombre, et
 
 ```{r delvar, echo=FALSE}
 datosML <- datosML[,c(5,6,7,8,9,10,15,16,17,18,19,22,23)]
+porciento <- 70/100
+set.seed(123)
+
+trainRowsNumber<-sample(nrow(datosML),porciento*nrow(datosML))
+train<-datosML[trainRowsNumber,]
+test<-datosML[-trainRowsNumber,]
 
 ```
 
@@ -1078,6 +1079,19 @@ Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 65% en don
 ## Prediccion por medio de árboles de decisión
 
 Cargaremos los valores de nuevo, ya que en este caso no es necesario tener cada una de las variables como un factor.
+EXPLICAR POR QUÉ NO HEMOS UTILIZADO ÁRBOLES DE DECISIÓN
+Se ha intentado realizar diferentes modelos de árbol de decisión, sin embargo, en todos no ha sido posible correrlos ya que no contamos con la capacidad computacional necesaria para completarlo, por esta razón se implementará el método por support vector machine.
+
+## Predicción por medio de Support Vector Machine 
+
+```{r svm, echo=FALSE}
+porcentaje<-0.7
+set.seed(123)
+modelosvm<-svm(y~., data = train, scale = F)
+summary(modelosvm)
+
+```
+
 
 
 ## Predicción por medio de Naive Bayes
