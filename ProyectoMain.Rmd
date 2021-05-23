@@ -1046,18 +1046,19 @@ rm(datos2019)
 ```
 
 ## Segundo análisis de datos
-Debido a que al tratar de hacer las predicciones se ha contado con errores debido a la gran cantidad que se está manejando, se ha decidido verificar cuáles son las variables más significativas y que no tengan correlación entre sí para poder eliminar las que no son completamente necesarias y hacer el procedimiento de predicción más sencillo.
+Debido a que al tratar de hacer las predicciones se ha contado con errores debido a la gran cantidad que se está manejando, se ha decidido verificar cuáles son las variables más significativas para trabajar únicamente con ellas, sin embargo, al contar con variables que no son únicamente numéricas no es posible realizar una correlación entre ellas, por lo que se ha estudiado los datos de cada variable y se ha discutido su importancia, llegando a lo siguiente:
+En el caso de la ocupación, tanto de hombres como mujeres, se cuenta con demasiados valores diferentes por lo que no se considera que sea significativo. En el caso de los hombres se cuenta con 489 diferentes ocupaciones y en el caso de las mujeres se cuenta con 487 ocupaciones diferentes.
+El número de nupcias también es ignorado ya que los valores de "ignorado" y "none" representan en hombres el 37.0% y el 44.61% respectivamente y en mujeres representa el 37.06% y 44.61% respectivamente, por lo que no se vuelve tan significativo.
+La variable de escolaridad tanto de hombres como mujeres también será eliminada ya que los valores de ignorado y ninguno representan un 13.35% y 21.89% para los hombres y un 13.06% y 30.68% para las mujeres.
+Por último, aquellos datos que tengan el registro, como el departamento de ocurrencia o el municipio de ocurrencia, también serán eliminados debido a que es más confiable trabajar con los datos de ocurrencia, porque en muchos casos se registran matrimonios tiempo después de que hayan ocurrido o incluso en lugares diferentes, por lo que los datos de registro no son tan confiables, además, en caso de que sí se haya registrado en la fecha y lugares correctos, se tendría los datos duplicados.
 
-### Diagrama de correlación
-```{r corrvar, echo=FALSE}
-library(corrplot)
-#cor(datosML, method = c("spearman"))
-#correlacionMatriz <- cor(datosML)
-#corrplot(correlacionMatriz, method = 'square')
-#cor(datosML)
+Por lo que nos quedamos con los valores de: Clase de unión, edad del hombre, etnia del hombre y de la mujer, nacionalidad del hombre y mujer, departamento, municipio, mes, año, día y área de ocurrencia y la variable a predecir que es si la mujer es mayor o menor de edad
+
+
+```{r delvar, echo=FALSE}
+datosML <- datosML[,c(5,6,7,8,9,10,15,16,17,18,19,22,23)]
 
 ```
-
 
 ## Prediccion por redes neuronales: RWEKA
 
