@@ -977,8 +977,6 @@ forma de matrimonio forzoso, ya que no se cuenta con el consentimiento pleno, li
 Dentro de la información generada a partir de los datos del INE, sobre los años de las mujeres que han contraido matrimonio de 12 a 25 años de edad se observa que, en la categoría de casadas, los porcentajes más altos se encuentran en las mujeres del rango de 21 a 25 años, de igual manera en la categoría de alguna vez unida o casada, las mujeres en este rango de edad, representan más del 70%. Un 10% de quienes responden que están casadas son niñas y adolescentes del rango de 15 a 17 años, mientras que el 25.4% en esta categoría de casadas pertenece al rango de mujeres de 18 a 20 años. Se destaca que las más jóvenes, adolescentes de 12 a 14 años, representan un 3.5% de la categoría haber estado alguna vez casadas. Estos datos han variado a partir de las reformas impuestas en Reforma el artículo 81 del Código Civil, Decreto Ley 106, artículos: 81, relativo a la aptitud para contraer matrimonio y establece que la edad mínima para contraer matrimonio es de 18 años; 82, relativo a la excepción a la edad mínima y la establece en 16 años, cuando concurran razones fundadas; 84, relativo a la autorización judicial para que los menores de edad puedan contraer matrimonio; 177 en el que prohíbe la unión de menores de edad.Publicada el Lunes, 23 de noviembre del 2015.
 
 
-#----------Regresión lineal
-
 
 #---------------------------Apartado de predición----------------------------------
 
@@ -1067,10 +1065,10 @@ datosML <- datosML[,c(5,6,7,8,9,10,15,16,17,18,19,22,23)]
 NB <- make_Weka_classifier("weka/classifiers/functions/MultilayerPerceptron")
 NB 
 WOW(NB)
-nnodos='22'
+nnodos='13'
 
 modelo.bp<-NB(datosML$y~., data=datosML,subset = trainRowsNumber, control=Weka_control(H=nnodos, N=100, G=TRUE), options=NULL)
-test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:22])
+test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:13])
 cfmWeka<-confusionMatrix(test$prediccionWeka,test$y)
 cfmWeka
 ```
@@ -1080,17 +1078,6 @@ Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 65% en don
 ## Prediccion por medio de árboles de decisión
 
 Cargaremos los valores de nuevo, ya que en este caso no es necesario tener cada una de las variables como un factor.
-
-```{r arboles, echo=FALSE}
-ct <- trainControl(method = "cv", train[,1:13],number = 10, verboseIter = T)
-modelo <- train(y~., data = train, method = "rf", trControl = ct, na.action = na.exclude)
-prediccionfvc <- predict(modelorf, newdata = test[,1:13])
-test$predrfvc <- prediccionfvc
-cfmCaret <- confusionMatrix(test$predrfvc,test$y)
-cfmCaret
-
-```
-
 
 
 ## Predicción por medio de Naive Bayes
