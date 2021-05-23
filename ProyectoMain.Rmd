@@ -996,6 +996,7 @@ datosML <- datosMatrimonio %>% filter(EDADMUJ >= 12)
 datosML <- datosML %>% filter(EDADHOM >= 14)
 datosML <- datosML[,-24]
 datosML <- datosML[,-7]
+datosML <- datosML[complete.cases(datosML), ]
 #
 datosML$DEPREG <- as.factor(datosML$DEPREG)
 datosML$MUPREG <- as.factor(datosML$MUPREG)
@@ -1021,7 +1022,7 @@ datosML$AÑOOCU <- as.factor(datosML$AÑOOCU)
 
 Luego, hacemos los conjuntos de entrenamiento y prueba y se borran las bases de datos de cada año individuales para liberar espacio en la memoria de R
 
-```{r train and test, echo=FALSE}
+```{r limpiezarm, echo=FALSE}
 
 rm(l)
 rm(datosMatrimonio)
@@ -1073,37 +1074,36 @@ test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:13])
 cfmWeka<-confusionMatrix(test$prediccionWeka,test$y)
 cfmWeka
 ```
-Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 65% en donde, si se observa la matriz de confusión, el algoritmo realmente predijo que todas las mujeres en base a los datos de test serían mayores de edad, situación que evidentemente no sucede, es posible que esto se deba a que los datos no muestran realmente un patrón evidente en el cuál se identifique un set de características para poder diferenciar estos dos grupos.
+Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 66% en donde, si se observa la matriz de confusión, el algoritmo realmente predijo que todas las mujeres en base a los datos de test serían mayores de edad, situación que evidentemente no sucede, es posible que esto se deba a que los datos no muestran realmente un patrón evidente en el cuál se identifique un set de características para poder diferenciar estos dos grupos.
 
+Explicar topología 
 
 ## Prediccion por medio de árboles de decisión
 
-Cargaremos los valores de nuevo, ya que en este caso no es necesario tener cada una de las variables como un factor.
-EXPLICAR POR QUÉ NO HEMOS UTILIZADO ÁRBOLES DE DECISIÓN
-Se ha intentado realizar diferentes modelos de árbol de decisión, sin embargo, en todos no ha sido posible correrlos ya que no contamos con la capacidad computacional necesaria para completarlo, por esta razón se implementará el método por support vector machine.
 
-## Predicción por medio de Support Vector Machine 
-
-```{r svm, echo=FALSE}
-porcentaje<-0.7
-set.seed(123)
-modelosvm<-svm(y~., data = train, scale = F)
-summary(modelosvm)
-
+```{r arbolRpart, echo=FALSE}
+#con caret
+ct<-trainControl(method = "cv",train[,1:13],number=10, verboseIter=T)
+modelorf<-train(y~.,data=train,method="rpart",trControl = ct)
+prediccionADVC<-predict(modelorf,newdata = test[,1:13])
+test$predADVC<-prediccionADVC
+cfmCaret <- confusionMatrix(test$predADVC,test$y)
+cfmCaret
 ```
-
-
+Se realizó un modelo de arbol de clasificación por caret utilizando el método por partición recursiva, utilizando un analisis multivariable, para modelar la influencia de los atributos sobre la variable respuesta, en este caso si la mujer es menor o mayor de edad. Se puede observar en el análisis que la predicción tuvo una eficiencia de caso 78% además, en la matriz de confusión se puede observar que predijo que 2953 eran menores de edad cuando en realidad eran mayores, por el otro lado predijo que 2581 mujeres eran mayores cuando en realidad eran menores, en sí esto es un número rango de equivocación significativamente preocupantes, sin embargo, al ver cuantas fueron sus predicciones acertadas, se puede determinar que efectivamente si la mujer es menor o mayor de edad se encuentra influenciada por variables como la edad del hombre, área geográfica, nacionalidad etc. 
 
 ## Predicción por medio de Naive Bayes
 
 ```{r bayes, echo=FALSE}
-
 modelo <- naiveBayes(train$y~., data = train)
 predBayes <- predict(modelo, newdata = train[,1:13])
 cm<- caret::confusionMatrix(predBayes,train$y)
 cm
-predBayes <- predict(modelo, newdata = test[,1:13])
-cm <- caret::confusionMatrix(predBayes, test$y)
+predBayesM <- predict(modelo, newdata = test[,1:13])
+test$PredBayes <- predBayesM
+cm <- caret::confusionMatrix(test$PredBayes, test$y)
 cm
 ```
+Cómo último método de ML se utilizó Naive Bayes, que se basa en la fórmula estadística de bayes la cuál modela la probabilidad de que sucede un suceso en base a que otro previamente ha sucedido. Al ver el porcentaje de acierto del algoritmo, se puede notar que acertó en un 71% por lo que si parece haber patrones que determinan si la mujer es menor o mayor de edad. Adicionalmente, si vemos la matriz de confusión al momento de predecir si es mayor, suele ser bastante preciso, sin embargo, predijo que muchas mujeres eran mayores de edad cuando en realidad no lo eran, aún así, tambien es notable, al ver la matriz de confusión y el porcentaje de acierto que las variables si influencian el estado de la mujer al casarse.
 
+## Comparación de algoritmos 
