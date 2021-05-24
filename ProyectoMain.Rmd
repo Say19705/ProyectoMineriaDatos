@@ -574,15 +574,38 @@ En este informe usted podrá leer los hallazgos sobre los matrimonios, basado en
 ```{r Matrimonios, echo=FALSE}
 summary(datosMatrimonio)
 ```
-En el siguiente cuadro se muestra el tipo de dato de cada variable:
+A continuación la explicación de qué representa cada una de las variables:
+DEPREG: departamento de registro
+MUPREG: municipio de registro
+MESREG: mes de registro
+AÑOREG: año de registro
+CLAUNI: clase de unión
+EDADHOM: edad del hombre
+EDADMUJ: edad de la mujer
+GETHOM: etnia del hombre
+GETMUJ: etnia de la mujer
+NACHOM: nacionalidad del hombre
+NACMUJ: nacionalidad de la mujer
+CIUOHOM: ocupación del hombre
+CIUOMUJ: ocupación de la mujer
+NUNUHO: número de nupcias del hombre
+NUNUMU: número de nupcias de la mujer
+DEPOCU: departamento de ocurrencia
+MUPOCU: municipio de ocurrencia
+MESOCU: mes de ocurrencia
+AÑOOCU: año de ocurrencia
+AREAGOCU: área geográfica de ocurrencia
+ESCHOM: escolaridad del hombre
+ESCMUJ: escolaridad de la mujer
+
+En el siguiente cuadro se muestra el tipo de dato de cada una de las variables mencionadas anteriormente:
 
 ```{r data, echo=FALSE}
 #
 str(datosMatrimonio)
 ```
 
-El dataset tiene 23 variables, el departamento, municipalidad, mes y año de registro, la casificación de la unión, las edades de los hombres y mujer, el grupo étnico de los hombres y mujeres, su nacionalidad, su oficio, la cantidad de nupcias de cada uno. Luego tambien se encuentran las variables de ocurrencia. el departamento, municipalidad, mes, año, area y dia de ocurrencia. Por último se encuentra la escolaridad de cada uno.
-Las variables más interesantes para el porpósito de la investigación son lass que proporcionan información de la fecha del matrimonio. Otras con gran potencial, son las edades de los cónyuges, ya que con ellas podemos analizar cual es la tendencia de matrimonios de menores, diferencias de edades etc.
+Las variables más interesantes para el porpósito de la investigación son las que proporcionan información de la fecha del matrimonio. Otras con gran potencial son las edades de los cónyuges, ya que con ellas podemos analizar cual es la tendencia de matrimonios de menores, diferencias de edades etc.
 
 
 ## Análisis de variables cuantitativas
@@ -691,11 +714,12 @@ En conclusión, la edad de las mujeres en el matrimonio no sigue una distribuci�
 
 ## Tabla de frecuencias para variables cualitativas
 
-### Tabla de frecuencias para el departamento de ocurrencia
+### Tabla de frecuencias para el departamento de ocurrencia y representación gráfica
 ```{r frecuenciaDepartamento, echo=FALSE}
 
-#DepOcurren <- data.frame(table(do.call(c, lapply(datosMatrimonio$DEPOCU, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$DEPOCU)
+counts <- table(datosMatrimonio$DEPOCU)
+barplot(counts, las = 2, cex.names=.5 ,main = "Distribución de departamento de ocurrencia", xlab = "Departamento de ocurrencia")
 ```
 
 Como puede observarse, el departamento en el que suele haber más matrimonios es en Guatemala, seguido por Huehuetenango y luego por Alta Verapaz.
@@ -705,6 +729,8 @@ Como puede observarse, el departamento en el que suele haber más matrimonios es
 
 #MuniOcurren <- data.frame(table(do.call(c, lapply(datosMatrimonio$MUPOCU, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$MUPOCU)
+counts <- table(datosMatrimonio$MUPOCU)
+barplot(counts, las = 2, cex.names=.5 ,main = "Distribución de municipio de ocurrencia", xlab = "Municipio de ocurrencia")
 ```
 
 De la misma manera, es Guatemala el municipio que cuenta con la mayor cantidad de matrimonios.
@@ -714,6 +740,8 @@ De la misma manera, es Guatemala el municipio que cuenta con la mayor cantidad d
 
 #EscolHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCHOM, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$ESCHOM)
+counts <- table(datosMatrimonio$ESCHOM)
+barplot(counts, las = 1, cex.names=.8 ,main = "Distribución de escolaridad de los hombres", xlab = "Escolaridad del hombre")
 ```
 
 Como puede observarse, el nivel de escolaridad más común entre los hombres es primaria, con 255,480 casos, mientras que el más bajo es el de post grado con 181 casos.
@@ -723,6 +751,8 @@ Como puede observarse, el nivel de escolaridad más común entre los hombres es 
 
 #EscolMuj <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCMUJ, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$ESCMUJ)
+counts <- table(datosMatrimonio$ESCMUJ)
+barplot(counts, las = 1, cex.names=.8 ,main = "Distribución de escolaridad de las mujeres", xlab = "Escolaridad de las mujeres")
 ```
 
 Como puede observarse, el nivel de escolaridad más común entre las mujeres es primaria, con 222076 casos, mientras que el más bajo es el de post grado con 126 casos.
@@ -731,6 +761,8 @@ Como puede observarse, el nivel de escolaridad más común entre las mujeres es 
 ```{r frecuenciaEtniaHombre, echo=FALSE}
 #EtHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$GETHOM, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$GETHOM)
+counts <- table(datosMatrimonio$GETHOM)
+barplot(counts, las = 1, cex.names=1 ,main = "Distribución de etnia de los hombres", xlab = "Etnia del hombre")
 ```
 
 Coomo puede observarse, el grupo étnico más común al que pertenecen los hombres en la base de datos es no indígena.
@@ -740,6 +772,8 @@ Coomo puede observarse, el grupo étnico más común al que pertenecen los hombr
 
 #EtHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$GETMUJ, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$GETMUJ)
+counts <- table(datosMatrimonio$GETMUJ)
+barplot(counts, las = 1, cex.names=1 ,main = "Distribución de etnia de las mujeres", xlab = "Etnia de las mujeres")
 ```
 
 De la misma manera, puede observarse que el grupo étnico más común al que pertenecen las mujeres en la base de datos es no indígena.
@@ -782,6 +816,8 @@ menorEdadGraph <- menorEdad %>% filter(EDADHOM >= 18)
 
 #departamentos
 table(menorEdadGraph$DEPOCU)
+counts <- table(menorEdadGraph$DEPOCU)
+barplot(counts, las = 2, cex.names=.5 ,main = "Departamentos con matrimonios con menores de edad", xlab = "Departamentos de ocurrencia")
 ```
 
 Puede observarse que muchos de estos matrimonios se llevan a cabo en el departamento de Guatemala, donde una gran población son ladinos.
@@ -794,8 +830,8 @@ library(magrittr)
 depMun <- (menorEdadGraph$MUPOCU)
 #departamentos
 table(depMun)
-#print(nrow(menorEdad))
-#print(nrow(menorEdadGraph))
+counts <- table(menorEdadGraph$MUPOCU)
+barplot(counts, las = 2, cex.names=.5 ,main = "Municipios con matrimonios con menores de edad", xlab = "Municipios de ocurrencia")
 
 ```
 
@@ -809,8 +845,8 @@ library(magrittr)
 etniaMujer <- (menorEdadGraph$GETMUJ)
 #departamentos
 table(etniaMujer)
-#print(nrow(menorEdad))
-#print(nrow(menorEdadGraph))
+counts <- table(menorEdadGraph$GETMUJ)
+barplot(counts, las = 1, cex.names=1 ,main = "Etnia de mujeres involucradas en matrimonios con menores de edad", xlab = "Etnia de las mujeres")
 
 ```
 
@@ -824,8 +860,8 @@ library(magrittr)
 etniaHombre <- (menorEdadGraph$GETHOM)
 #departamentos
 table(etniaHombre)
-#print(nrow(menorEdad))
-#print(nrow(menorEdadGraph))
+counts <- table(menorEdadGraph$GETHOM)
+barplot(counts, las = 1, cex.names=1 ,main = "Etnia de hombres involucrados en matrimonios con menores de edad", xlab = "Etnia de los hombres")
 
 ```
 
