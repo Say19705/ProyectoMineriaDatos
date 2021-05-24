@@ -574,6 +574,7 @@ En este informe usted podrá leer los hallazgos sobre los matrimonios, basado en
 ```{r Matrimonios, echo=FALSE}
 summary(datosMatrimonio)
 ```
+
 A continuación la explicación de qué representa cada una de las variables:
 DEPREG: departamento de registro
 MUPREG: municipio de registro
@@ -611,6 +612,7 @@ Las variables más interesantes para el porpósito de la investigación son las 
 ## Análisis de variables cuantitativas
 ### Registros de matrimonio
 #### Prueba de normalidad para  registros de matrimonios:
+
 ```{r normalHist, echo=FALSE}
 #install.packages("ggplot2",repos = "http://cran.us.r-project.org")
 library (ggplot2)
@@ -627,6 +629,7 @@ ggplot(data = datosMatrimonio, aes(x = AÑOREG)) +
 Como es de esperarse, no es posible observar que exista una relación en el histograma de registros de matrimonios con las reformas planteadas para la prohibición de matrimonios con menores de edad, ya que parece que la cantidad de matrimonios ha sido bastante constante durante los años. Según el histograma mostrado, la cantidad de matrimonios por año no sigue una distribución normal.
 
 ### Diagrama de caja y bigotes
+
 ```{r normalBox, echo=FALSE}
 boxplot(datosMatrimonio$AÑOREG, main = "Caja y Bigotes de registro de matrimonios por año", xlab = "Registro por año")
 ```
@@ -634,6 +637,7 @@ boxplot(datosMatrimonio$AÑOREG, main = "Caja y Bigotes de registro de matrimoni
 Como dicho anteriormente, no hay muchos grupos atípicos ya que se concentran dentro de un intervalo.Según este diagrama, sí se cuenta con normalidad en la cantidad de matrimonios por año.
 
 ### Diagrama de qqnormal
+
 ```{r normalQQ, echo=FALSE}
 qqnorm(datosMatrimonio$AÑOREG, col="blue")
 qqline(datosMatrimonio$AÑOREG, col="red")
@@ -645,6 +649,7 @@ En conclusión, la cantidad de matrimonios por año no sigue una distribución n
 
 ## Registros de Edad hombre
 ### Prueba de normalidad para la edad del hombre:
+
 ```{r normalHistEdadHombre, echo=FALSE}
 #install.packages("ggplot2",repos = "http://cran.us.r-project.org")
 library (ggplot2)
@@ -662,6 +667,7 @@ En este histograma se puede observar que los datos tienen relativamente forma de
 Debido al sesgo, la edad de los hombres en matrimonios no sigue una distribución normal.
 
 ### Diagrama de caja y bigotes
+
 ```{r normalBoxEdadHombre, echo=FALSE}
 boxplot(datosMatrimonio$EDADHOM, main = "Caja y Bigotes de edad de los hombres al casarse", xlab = "edad")
 ```
@@ -669,6 +675,7 @@ boxplot(datosMatrimonio$EDADHOM, main = "Caja y Bigotes de edad de los hombres a
 Se evidencia la gran cantidad de datos atípicos en el diagrama, se encuentran muy dispersos arriba de la media y del extremo superior que se encuentra al rededor de los 30 años. Esto quiere decir que la edad de los hombres en el matrimonio no sigue una distribución normal.
 
 ### Diagrama qqnormal
+
 ```{r normalQQEdadHombre, echo=FALSE}
 qqnorm(datosMatrimonio$EDADHOM, col="blue")
 qqline(datosMatrimonio$EDADHOM, col="red")
@@ -680,6 +687,7 @@ En conclusión, la edad de los hombres en el matrimonio no sigue una distribuci�
 
 ## Registros de edad de mujeres
 ### Prueba de normalidad para la edad de la mujer:
+
 ```{r normalHistEdadMuje, echo=FALSE}
 #install.packages("ggplot2",repos = "http://cran.us.r-project.org")
 library (ggplot2)
@@ -696,6 +704,7 @@ ggplot(data = datosMatrimonio, aes(x = EDADMUJ)) +
 De la misma manera que en el histograma de hombres, hay una forma relativa de campana, sin embargo se nota un gran sesgo a la izquierda que demuestra que la edad de mujeres en el matrimonio suele ser debajo de los 25, aunque también se cuentan con algunos datos arriba de los 75 años. Debido al sesgo, la edad de mujeres en el matrimonio no sigue una distribución normal.
 
 ### Diagrama de caja y bigotes
+
 ```{r normalBoxEdadMujer, echo=FALSE}
 boxplot(datosMatrimonio$EDADMUJ, main = "Caja y Bigotes de edad de las mujeres al casarse", xlab = "edad")
 ```
@@ -703,6 +712,7 @@ boxplot(datosMatrimonio$EDADMUJ, main = "Caja y Bigotes de edad de las mujeres a
 En este diagrama de caja y bigotes es posible ver una gran cantidad de datos atípicos arriba del extremo superior que se encuentra al rededor de los 30 años, muy similar al diagrama de la edad de los hombres, por lo que de la misma manera no se cuenta con normalidad en la edad de las mujeres en el matrimonio.
 
 ### Diagrama qqnormal
+
 ```{r normalQQEdadMujer, echo=FALSE}
 qqnorm(datosMatrimonio$EDADMUJ, col="blue")
 qqline(datosMatrimonio$EDADMUJ, col="red")
@@ -715,6 +725,7 @@ En conclusión, la edad de las mujeres en el matrimonio no sigue una distribuci�
 ## Tabla de frecuencias para variables cualitativas
 
 ### Tabla de frecuencias para el departamento de ocurrencia y representación gráfica
+
 ```{r frecuenciaDepartamento, echo=FALSE}
 
 table(datosMatrimonio$DEPOCU)
@@ -725,6 +736,7 @@ barplot(counts, las = 2, cex.names=.5 ,main = "Distribución de departamento de 
 Como puede observarse, el departamento en el que suele haber más matrimonios es en Guatemala, seguido por Huehuetenango y luego por Alta Verapaz.
 
 ### Tabla de frecuencias para el municipio de ocurrencia
+
 ```{r frecuenciaMunicipio, echo=FALSE}
 
 #MuniOcurren <- data.frame(table(do.call(c, lapply(datosMatrimonio$MUPOCU, function(x) unlist(strsplit(x, "\\|"))))))
@@ -736,6 +748,7 @@ barplot(counts, las = 2, cex.names=.5 ,main = "Distribución de municipio de ocu
 De la misma manera, es Guatemala el municipio que cuenta con la mayor cantidad de matrimonios.
 
 ### Tabla de frecuencias para la escolaridad del hombre
+
 ```{r frecuenciaEscolaridadHombre, echo=FALSE}
 
 #EscolHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCHOM, function(x) unlist(strsplit(x, "\\|"))))))
@@ -747,6 +760,7 @@ barplot(counts, las = 1, cex.names=.8 ,main = "Distribución de escolaridad de l
 Como puede observarse, el nivel de escolaridad más común entre los hombres es primaria, con 255,480 casos, mientras que el más bajo es el de post grado con 181 casos.
 
 ### Tabla de frecuencias para la escolaridad de la Mujer
+
 ```{r frecuenciaEscolaridadMujer, echo=FALSE}
 
 #EscolMuj <- data.frame(table(do.call(c, lapply(datosMatrimonio$ESCMUJ, function(x) unlist(strsplit(x, "\\|"))))))
@@ -758,6 +772,7 @@ barplot(counts, las = 1, cex.names=.8 ,main = "Distribución de escolaridad de l
 Como puede observarse, el nivel de escolaridad más común entre las mujeres es primaria, con 222076 casos, mientras que el más bajo es el de post grado con 126 casos.
 
 ### Tabla de frecuencias para el grupo étnico del hombre
+
 ```{r frecuenciaEtniaHombre, echo=FALSE}
 #EtHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$GETHOM, function(x) unlist(strsplit(x, "\\|"))))))
 table(datosMatrimonio$GETHOM)
@@ -768,6 +783,7 @@ barplot(counts, las = 1, cex.names=1 ,main = "Distribución de etnia de los homb
 Coomo puede observarse, el grupo étnico más común al que pertenecen los hombres en la base de datos es no indígena.
 
 ### Tabla de frecuencias para el grupo étnico de la mujer
+
 ```{r frecuenciaEtniaMujer, echo=FALSE}
 
 #EtHom <- data.frame(table(do.call(c, lapply(datosMatrimonio$GETMUJ, function(x) unlist(strsplit(x, "\\|"))))))
@@ -808,6 +824,7 @@ abline(lm(menorEdad$EDADMUJ ~ menorEdad$EDADHOM), col = "red")
 Filtrando los datos en donde las mujeres son menores a 18 años, es posible observar que una gran cantidad de mujeres se encuentran comprometidas con hombres mucho mayores a ellas, existen datos atípicos muy extensos y preocupantes, cabe mencionar que los datos que se encuentran en el fondo (muy pocos pero si existen) se encuentran así debido a que los datos no son indicados en el diagrama.
 
 ## Departamentos en donde se llevan a cabo los matrimonios de mujeres menores de edad
+
 ```{r tabla por departamentos del dataset, echo = FALSE}
 library(dplyr)
 library(magrittr)
@@ -823,6 +840,7 @@ barplot(counts, las = 2, cex.names=.5 ,main = "Departamentos con matrimonios con
 Puede observarse que muchos de estos matrimonios se llevan a cabo en el departamento de Guatemala, donde una gran población son ladinos.
 
 ## Municipios en donde se llevan a cabo los matrimonios de mujeres menores de edad
+
 ```{r tabla por municipios de casamientos, echo = FALSE}
 library(dplyr)
 library(magrittr)
@@ -838,6 +856,7 @@ barplot(counts, las = 2, cex.names=.5 ,main = "Municipios con matrimonios con me
 De la misma manera, puede observarse que la mayor cantidad de ocurrencias se encuentra en Guatemala.
 
 ## La etnia de la mujer en donde es más común este evento
+
 ```{r tabla por etnia de la mujer, echo = FALSE}
 library(dplyr)
 library(magrittr)
@@ -853,6 +872,7 @@ barplot(counts, las = 1, cex.names=1 ,main = "Etnia de mujeres involucradas en m
 Se puede observar que no hay una diferencia significativa en estos grupos, lo cual es importante para saber si el hecho de que ocurran los matrimonios con menores de edad, es algo que se ve influido por la cultura.
 
 ## La etnia del hombre en donde es más común este evento
+
 ```{r tabla por etnia del hombre, echo = FALSE}
 library(dplyr)
 library(magrittr)
@@ -893,6 +913,7 @@ plot(1:10, wss, type="b", xlab="Number of Clusters",  ylab="Within groups sum of
 Puede observarse en el gráfico que el codo se encuentra en el valor 4, por lo que esta es la cantidad adecuada de clusters que se deben utilizar.
 
 ## Agrupamiento por medio de k-means  
+
 ```{r kmeans, echo=FALSE}
 km<-kmeans(datosClustering[,1:4],4,iter.max =100)
 datosClustering$grupo<-km$cluster
@@ -907,6 +928,7 @@ gkm4<- datosClustering[datosClustering$grupo==4,]
 Se puede observar cómo los datos se encuentran divididos en 4 grupos, verde, rojo, azul y negr, en donde todos los grupos, excepto el azul, parecen estar bastante concentrados en un punto.
 
 ## Mixture of gaussians
+
 ```{r gaussians, echo = FALSE}
 library(mclust)
 mc<-Mclust(datosClustering[,1:4],4)
@@ -921,6 +943,7 @@ g4PMC<-datosClustering[datosClustering$mxGau==4,]
 En este gráfico se puede observar como en cada combinación de gráficos sucede la combinación de grupos y se observan los clusters bastante separados y bien identificados.
 
 ## Fuzzy C-means
+
 ```{r fuzzy2, echo=FALSE}
 library(e1071)#para cmeans
 library(cluster)
@@ -969,14 +992,15 @@ summary(g4FCM)
 
 En el resúmer por fuzzy se puede identificar que la media de la edad de las mujeres parece ser constante, los años un poco variados pero en cierta manera se observa una relación entre año y edad del hombre.
 
-
 ## Evaluación de la tendencia de agrupamiento:
+
 En esté análisis de datos consiste en examinar si los datos son agrupables, es decir, si los datos contienen cualquier estructura de agrupación inherente. Esto debe comprobarse antes de aplicar el análisis de agrupación.
 
 Hopkins estadística: si el valor de Hopkins estadística está cerca de cero muy por debajo de 0,5, entonces podemos concluir que el conjunto de datos es significativamente clusterable.
 VAT evaluación visual de la tendencia de agrupamiento: la cubeta detecta la tendencia de agrupamiento en una forma visual contando el número de bloques oscuros o coloreados de forma cuadrada a lo largo de la diagonal en una imagen de rectangulos.
 
 ### En hombres
+
 ```{r Evaluacion de la tendencia de agrupamiento:cluster jerarquico, echo=FALSE}
 
 clarax <- clara(datosMatrimonio$EDADMUJ , 3)
@@ -1011,7 +1035,6 @@ más propensos a la separación, o al divorcio al enfrentar situaciones adversas
 forma de matrimonio forzoso, ya que no se cuenta con el consentimiento pleno, libre e informado de una de las partes o de ninguna de ellas.
 
 Dentro de la información generada a partir de los datos del INE, sobre los años de las mujeres que han contraido matrimonio de 12 a 25 años de edad se observa que, en la categoría de casadas, los porcentajes más altos se encuentran en las mujeres del rango de 21 a 25 años, de igual manera en la categoría de alguna vez unida o casada, las mujeres en este rango de edad, representan más del 70%. Un 10% de quienes responden que están casadas son niñas y adolescentes del rango de 15 a 17 años, mientras que el 25.4% en esta categoría de casadas pertenece al rango de mujeres de 18 a 20 años. Se destaca que las más jóvenes, adolescentes de 12 a 14 años, representan un 3.5% de la categoría haber estado alguna vez casadas. Estos datos han variado a partir de las reformas impuestas en Reforma el artículo 81 del Código Civil, Decreto Ley 106, artículos: 81, relativo a la aptitud para contraer matrimonio y establece que la edad mínima para contraer matrimonio es de 18 años; 82, relativo a la excepción a la edad mínima y la establece en 16 años, cuando concurran razones fundadas; 84, relativo a la autorización judicial para que los menores de edad puedan contraer matrimonio; 177 en el que prohíbe la unión de menores de edad.Publicada el Lunes, 23 de noviembre del 2015.
-
 
 
 #---------------------------Apartado de predición----------------------------------
@@ -1085,7 +1108,7 @@ Por último, aquellos datos que tengan el registro, como el departamento de ocur
 Por lo que nos quedamos con los valores de: Clase de unión, edad del hombre, etnia del hombre y de la mujer, nacionalidad del hombre y mujer, departamento, municipio, mes, año, día y área de ocurrencia y la variable a predecir que es si la mujer es mayor o menor de edad
 
 
-```{r delvar, echo=FALSE}
+```{r delvar, echo=TRUE}
 datosML <- datosML[,c(5,6,7,8,9,10,15,16,17,18,19,22,23)]
 porciento <- 70/100
 set.seed(123)
@@ -1095,6 +1118,8 @@ train<-datosML[trainRowsNumber,]
 test<-datosML[-trainRowsNumber,]
 
 ```
+
+Para poder escoger los grupos de entrenamiento y prueba se ha utilizado el 70% del total de los datos para el entrenamiento y el 30% restante para la prueba, esto para que se cuente con una cantidad significativa de datos para así mejorar el entrenamiento de los mismos sin que se aprendan patrones específicos.
 
 ## Prediccion por redes neuronales: RWEKA
 
@@ -1112,6 +1137,7 @@ test$prediccionWeka<-predict(modelo.bp, newdata = test[,1:13])
 cfmWeka<-confusionMatrix(test$prediccionWeka,test$y)
 cfmWeka
 ```
+
 Utilizando redes neuronales por Rweka se obtuvo un porcentaje de casi 66% en donde, si se observa la matriz de confusión, el algoritmo realmente predijo que todas las mujeres en base a los datos de test serían mayores de edad, situación que evidentemente no sucede, es posible que esto se deba a que los datos no muestran realmente un patrón evidente en el cuál se identifique un set de características para poder diferenciar estos dos grupos.
 
 
@@ -1157,3 +1183,18 @@ Se ha logrado predecir si la edad de una mujer en un matrimonio supera la mayor�
 El alogritmo más efectivo para hacer la predicción ha sido los árboles de decisión por medio de rpart, con un porcentaje de acierto de 78%.
 
 Fue posible observar que la cantidad de matrimonios con mujeres menores de edad (28,219) a lo largo de los años 2009 a 2019 representa casi la mitad de la cantidad de matrimonios con mujeres mayores de edad (54,183), lo cual no ha resultado ser tan grave como se esperaba pero sigue siendo una cantidad preocupante.
+
+
+### Bibliografía
+
+Chen, S., Webb, G., Liu, L. & Ma, Xin. (2019). A novel selective Naive Bayes algorithm. Elsevier. https://www.sciencedirect.com/science/article/abs/pii/S0950705119306185 
+
+Du, J., Chen, Q., Peng, Y., Xiang, Y., Tao, C, Lu, Z. (2019). ML-Net: Multi-label classification of biomedical texts with deep neural networks. Journal of the american medical informatic Association. 1279-1285. https://doi.org/10.1093/jamia/ocz085
+
+Freund, Y., Mason, L. (2000). The alternating decision tree learning algorithm.  http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.116.2945&rep=rep1&type=pdf 
+
+Karim, M. Rahman, R. (2013).  Decision tree and Naive Bayes Algorithm for Classification and Generation of Actionable Knowledge for Direct Marketing. https://www.scirp.org/html/6-9301587_30463.htm?pagespeed=noscript 
+
+Prensa Libre (2019). https://www.prensalibre.com/guatemala/comunitario/persisten-matrimonios-de-menores-de-edad-en-guatemala-pese-a-prohibicion/
+
+unionestempranas. (s.f.) https://unionestempranas.org/edades-minimas-para-el-matrimonio-en-guatemala/
