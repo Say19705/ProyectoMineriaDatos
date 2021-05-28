@@ -258,6 +258,7 @@ for(i in 1:length(cnames)){
   }
 }
 colnames(datos2012) <- nombresN
+datos2012$AÑOOCU <- ifelse(datos2012$AÑOOCU == 'None', 2012, datos2012$AÑOOCU)
 #------------------------Modificaciones 2013------------------------
 #Crear columnas en dataset 2013 AÑOOCU, NUNUHO, NUMUNU
 AÑOOCU <- rnorm(nrow(datos2013))
@@ -302,6 +303,8 @@ for(i in 1:length(cnames)){
 }
 colnames(datos2013) <- nombresN
 
+datos2013$AÑOOCU <- ifelse(datos2013$AÑOOCU == 'None', 2013, datos2013$AÑOOCU)
+
 #-----------------------Modificaciones 2014---------------------------
 #Crear columnas en dataset 2014 AÑOOCU, NUNUHO, NUNUMU
 AÑOOCU <- rnorm(nrow(datos2014))
@@ -344,6 +347,7 @@ for(i in 1:length(cnames)){
   }
 }
 colnames(datos2014) <- nombresN
+datos2014$AÑOOCU <- ifelse(datos2014$AÑOOCU == 'None', 2014, datos2014$AÑOOCU)
 #-------------------Modificaciones 2015--------------------------
 #hacer la división del 2015
 #PUEHOM
@@ -888,6 +892,34 @@ barplot(counts, las = 1, cex.names=1 ,main = "Etnia de hombres involucrados en m
 
 
 Se puede observar que no hay una diferencia significativa en estos grupos, lo cual es importante para saber si el hecho de que ocurran los matrimonios con menores de edad, es algo que se ve influido por la cultura.
+
+## Escolaridad del hombre involucrado en este evento
+
+```{r frecuenciaEscolaridadHombreMenor, echo=FALSE}
+library(RColorBrewer)
+coul <- brewer.pal(8,"Set2")
+counts <- table(menorEdadGraph$ESCHOM)
+barplot(counts, las = 1, cex.names=.8 , xlab = "Escolaridad del hombre", col = coul)
+```
+
+## Escolaridad de la mujer involucrada en este evento
+
+```{r frecuenciaEscolaridadMujer, echo=FALSE}
+
+coul <- brewer.pal(8,"Set2")
+counts <- table(menorEdadGraph$ESCMUJ)
+barplot(counts, las = 1, cex.names=.8 , xlab = "Escolaridad de las mujeres", col = coul)
+```
+
+## Ocurrencia de matrimonios con menores de edad desde 2009 a 2019
+
+```{r matrimoniosMenorses, echo=FALSE}
+
+coul <- brewer.pal(8,"Set2")
+counts <- table(menorEdadGraph$AÑOOCU)
+barplot(counts, las = 1, cex.names=.8 , xlab = "Año de ocurrencia", col = coul)
+
+``` 
 
 # -----------------------------------Clustering--------------------------------
 
